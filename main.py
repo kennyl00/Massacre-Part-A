@@ -1,7 +1,7 @@
 from neighbour import *
 from board import *
 from file import *
-
+from moves import *
 
 # This is the main file
 # Created by JiaWei and Kenny (20/3/18)
@@ -17,9 +17,8 @@ def main():
     # Find the neighbours of every Pieces
     find_neighbour(board)
 
-    
-
-
+    print(count_legal_move(board, WHITE))
+    print(count_legal_move(board, BLACK))
 
 
 

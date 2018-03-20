@@ -1,6 +1,7 @@
 # This file contains functions that deals with movements of the Pieces
 # Created by JiaWei and Kenny (20/3/18)
 
+from board import *
 
 def count_legal_move(new_board, color):
     count = 0

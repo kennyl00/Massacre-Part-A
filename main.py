@@ -6,16 +6,18 @@ from file import *
 # This is the main file
 # Created by JiaWei and Kenny (20/3/18)
 
-
-
-
 def main():
-    print("HELLO")
+
+    # Create a new Board
     board = Board()
 
+    # Read the file and set up the Board with Squares and Pieces
     read_file('sample3.txt', board)
 
+    # Find the neighbours of every Pieces
     find_neighbour(board)
+
+    
 
 
 

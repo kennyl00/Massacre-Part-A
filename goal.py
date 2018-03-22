@@ -67,7 +67,12 @@ def limited_dfs(new_board, depth, visited_list, goal_squares, position):
         
         # if the white piece is removed, return None
         if get_eliminated(position):
+        	# remove neighbourhood of the white piece
             remove_neighbours(new_board, position, W)
+            for i in reduced_pieces:
+            	# recover everything
+                new_board.pieces.append(i)
+                goal_squares.pop()
             return
         
         for piece in new_board.pieces:

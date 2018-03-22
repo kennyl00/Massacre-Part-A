@@ -5,118 +5,89 @@ from board import *
 def determinate_goals(board):
     # Goal Squares are defined as Squares the would lead to the elimination of
     # Pieces
-
+    # remove white piece neighbours of all pieces
+    num_white = num_white_pieces(new_board)
+    for piece in new_board.pieces:
+        remove_neighbours(new_board, piece, W)
+    
+    # two white pieces is sufficient to complete the all targets
+    if num_white > 2:
+        num_white = 2
+    
     # List of Goal Squares
     goal_squares = []
+    
+    # loop over all neighbours of black pieces and use limited dps to search
+    # desirable destinations
+    for piece in new_board.pieces:
+        if piece.color is B:
+        	# loop over directions both on clockwise and anticlockwise
+            for dir in range(LEFT, LEFT2 + 1):
+            	# only squares could be destinations
+                if piece.square_at(dir) and isinstance(piece.square_at(dir), Square):
+                    limited_dfs(new_board, num_white, goal_squares, piece.square_at(dir))
 
-    # Get the number of White Pieces on the Board
-    num_white = num_white_pieces(board)
-
-    # Remove the White Pieces from the Board
-    board.pieces = [piece for piece in board.pieces if piece.color != WHITE]
-
-    # Create a List with the size of the number of White Pieces
-    visited_list = [None] * (num_white + 1)
-
-    limited_dfs(board, num_white, visited_list, goal_squares)
-
+    return goal_squares
 
 
 # This Function utilises Limited Depth First Search
-def limited_dfs(new_board, depth, visited_list, goal_squares):
-
-    if find_solution(new_board, visited_list):
-        del goal_squares[:]
-        for i in visited_list:
-            if i and i not in goal_squares:
-                goal_squares.append(i)
-
-        return visited_list
-
+def limited_dfs(new_board, depth, visited_list, goal_squares, position):
+	# if a solution if found, return the goal_squares
+    if find_solution(new_board):
+        return goal_squares
+    
+    # if haven't reach limit
     if not depth == 0:
-
-        set_piece_neighbour(new_board)
-
-        remove_white_neighbours(new_board)
-
-        clear_priority(new_board)
-        set_priority(new_board)
-
-        for square in new_board.squares:
-            if not square.priority == 0 and square not in visited_list:
-                visited_list[depth] = square
-
-                limited_dfs(new_board, depth - 1, visited_list, goal_squares)
-
+    	# create a new white piece at the required position
+        position = Piece(position.v_location, position.h_location, W)
+        # construst neighbourhood for the white piece
+        for piece in new_board.pieces:
+            for dir in range(LEFT, LEFT2 + 1):
+                if piece.square_at(dir):
+                    if piece.square_at(dir).v_location == position.v_location and \
+                            piece.square_at(dir).h_location == position.h_location:
+                        piece.set_neighbour(dir, position)
+                        position.set_neighbour(dir, piece)
+        
+        # balck pieces which are required to be removed
+        reduced_pieces = []                       
+        
+        # if a black piece is removed
+        for piece in new_board.pieces:
+            if get_eliminated(piece) and piece.color is B:
+            	# check this black piece's neighbours
+                black_piece_reduced(piece, goal_squares)
+                reduced_pieces.append(piece)
+        
+        # remove the black pieces
+        new_board.pieces = list(set(new_board.pieces) - set(reduced_pieces))
+        # remove all neighbourhood of these black pieses
+        for piece in reduced_pieces:
+            remove_neighbours(new_board, piece, B)
+        
+        # if the white piece is removed, return None
+        if get_eliminated(position):
+            remove_neighbours(new_board, position, W)
+            return
+        
+        for piece in new_board.pieces:
+            if piece.color is B:
+                for dir in range(LEFT, LEFT2 + 1):
+                    if piece.square_at(dir) and isinstance(piece.square_at(dir), Square):
+                        limited_dfs(new_board, depth - 1, goal_squares, piece.square_at(dir))
+                        
+    # if reaches to limit, return None
     else:
-
         return
 
 
-def find_solution(board, visited_list):
-    # For every Piece on the Board, mark them Unremovable
-    for piece in board.pieces:
-        piece.removable = False
-
-    # For every Piece on the Board
-    for piece in board.pieces:
-
-        # If the Piece is Black
-        if piece.color is BLACK:
-
-            # For every Direction of the Black Piece
-            for dir in range(LEFT, BOTTOM + 1):
-
-                # Get the Object at a Direction (TOP, BOTTOM, LEFT, RIGHT)
-                dir_neighbour = peice.get_neighbour(dir)
-                # Get the Object in the Opposite Direction (BOTTOM, TOP, RIGHT, LEFT)
-                opp_neighbour = piece.get_opposite_neighbour(dir)
-
-                # If the Piece is sandwhiched between 2 Objects
-                if dir_neighbour and opp_neighbour:
-
-                    # If the Object at that Direction is a Piece
-                    if isinstance(dir_neighbour, Piece):
-
-                        # Check if the Piece is a Corner
-                        if dir_neighbour is CORNER:
-
-                            # If the opposite Direction Piece is a Square
-                            # and if it is in the visited_list
-                            # mark the Piece removable and stop checking
-                            # other Directions
-                            if isinstance(opp_neighbour, Square) and opp_neighbour in visited_list:
-                                piece.removable = True
-                                break
-
-                    # If the Object at that Direction is not a Piece
-                    else:
-
-                        # Check if it is in the visited_list
-                        if dir_neighbour in visited_list:
-
-                            # Check if the opposite Object is a Piece and if it is a Corner
-                            if isinstance(opp_neighbour, Piece) and opp_neighbour.color is CORNER:
-
-                                # Mark the Piece removable
-                                piece.removable = True
-                                break
-
-                            # Check if the opposite Object is a Square and
-                            # if it is in the visited_list
-                            if isinstance(opp_neighbour, Square) and opp_neighbour in visited_list:
-                                # Mark the piece removeable
-                                piece.removable = True
-                                break
-
-
-
+# if all black pieces are eliminated
+def find_solution(new_board):
     for piece in new_board.pieces:
-        if piece.color is B and piece.removable is False:
-
+        if piece.color is B:
             return False
-
     return True
+
 
 def set_neighbour(piece, dir, list):
     if dir == LEFT and piece.left is None:
@@ -128,28 +99,19 @@ def set_neighbour(piece, dir, list):
     if dir == BOTTOM and piece.bottom is None:
         piece.bottom = occupied(piece, dir, list)
 
-def remove_white_neighbours(new_board):
+
+# remove all neighbourhood for a certain color or a certain piecee\
+def remove_neighbours(new_board, this_piece, color):
     for piece in new_board.pieces:
-        for dir in range(LEFT, BOTTOM + 1):
-            if isinstance(piece.square_at(dir), Piece) and piece.square_at(dir).color is W:
-                piece.set_neighbour(dir, None)
+    	# loop over directions both on clockwise and anticlockwise
+        for dir in range(LEFT, LEFT2 + 1):
+            if isinstance(piece.square_at(dir), Piece) and piece.square_at(dir).color is color:
+                if piece.square_at(dir).v_location == this_piece.v_location and \
+                        piece.square_at(dir).h_location == this_piece.h_location:
+                        # create a square if a piece is reomved and construct neighbourhood
+                        new_square = Square(piece.square_at(dir).v_location, piece.square_at(dir).h_location)
+                        piece.set_neighbour(dir, new_square)
 
-
-# these two priority methods slow down limited DFS a lot
-def clear_priority(new_board):
-    for piece in new_board.pieces:
-        if piece.color is B or piece.color is X:
-            for dir in range(LEFT, BOTTOM + 1):
-                if isinstance(piece.square_at(dir), Square):
-                    piece.square_at(dir).priority = 0
-
-
-def set_priority(new_board):
-    for piece in new_board.pieces:
-        if piece.color is B or piece.color is X:
-            for dir in range(LEFT, BOTTOM + 1):
-                if isinstance(piece.square_at(dir), Square):
-                    piece.square_at(dir).priority += 1
 
 # This function returns the number of White Pieces on any given Board
 def num_white_pieces(board):

@@ -5,12 +5,31 @@
 BOARD_COL_NUM = 8
 BOARD_ROW_NUM = 8
 LEFT = 0
-RIGHT = 1
-TOP = 2
+TOP = 1
+RIGHT = 2
 BOTTOM = 3
-WHITE = 'W'
-BLACK = 'B'
-CORNER = 'X'
+BOTTOM2 = 4
+RIGHT2 = 5
+TOP2 = 6
+LEFT2 = 7
+W = 'W'
+B = 'B'
+X = 'X'
+
+# a class contains two pieces
+class Goals:
+    piece1 = None
+    piece2 = None
+
+    def __init__(self):
+        assert 1 == 1
+
+    def set_piece1(self, piece1):
+        self.piece1 = piece1
+
+    def set_piece2(self, piece2):
+        self.piece2 = piece2
+
 
 class Board:
     # List of Squares and Pieces
@@ -41,6 +60,7 @@ class Square:
         self.v_location = v
         self.h_location = h
 
+
 class Piece:
     # Coordinates of each Piece
     v_location = None
@@ -64,35 +84,34 @@ class Piece:
         self.h_location = h
         self.color = color
 
-
     def square_at(self, dir):
-        if dir == LEFT:
+        if dir == LEFT or dir == LEFT2:
             return self.left
-        if dir == RIGHT:
+        if dir == RIGHT or dir == RIGHT2:
             return self.right
-        if dir == TOP:
+        if dir == TOP or dir == TOP2:
             return self.top
-        if dir == BOTTOM:
+        if dir == BOTTOM or dir == BOTTOM2:
             return self.bottom
 
     def opposite_of(self, dir):
-        if dir == LEFT and self.left:
+        if dir == LEFT or dir == LEFT2 and self.left:
             return self.right
-        if dir == RIGHT and self.right:
+        if dir == RIGHT or dir == RIGHT2 and self.right:
             return self.left
-        if dir == TOP and self.top:
+        if dir == TOP or dir == TOP2 and self.top:
             return self.bottom
-        if dir == BOTTOM and self.bottom:
+        if dir == BOTTOM or dir == BOTTOM2 and self.bottom:
             return self.top
 
     # This function sets the Piece's Direction (TOP, BOTTOM, LEFT, RIGHT) to
     # to a given object (Piece, Square)
     def set_neighbour(self, dir, neighbour):
-        if dir == LEFT:
+        if dir == LEFT or dir == LEFT2:
             self.left = neighbour
-        if dir == RIGHT:
+        if dir == RIGHT or dir == RIGHT2:
             self.right = neighbour
-        if dir == TOP:
+        if dir == TOP or dir == TOP2:
             self.top = neighbour
-        if dir == BOTTOM:
+        if dir == BOTTOM or dir == BOTTOM2:
             self.bottom = neighbour

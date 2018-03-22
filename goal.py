@@ -1,22 +1,21 @@
 
 from board import *
 
-
 def determinate_goals(board):
     # Goal Squares are defined as Squares the would lead to the elimination of
     # Pieces
-    # remove white piece neighbours of all pieces
+    # Remove White Piece neighbours of all pieces
     num_white = num_white_pieces(new_board)
     for piece in new_board.pieces:
         remove_neighbours(new_board, piece, W)
-    
+
     # two white pieces is sufficient to complete the all targets
     if num_white > 2:
         num_white = 2
-    
+
     # List of Goal Squares
     goal_squares = []
-    
+
     # loop over all neighbours of black pieces and use limited dps to search
     # desirable destinations
     for piece in new_board.pieces:
@@ -35,7 +34,7 @@ def limited_dfs(new_board, depth, visited_list, goal_squares, position):
 	# if a solution if found, return the goal_squares
     if find_solution(new_board):
         return goal_squares
-    
+
     # if haven't reach limit
     if not depth == 0:
     	# create a new white piece at the required position
@@ -48,23 +47,23 @@ def limited_dfs(new_board, depth, visited_list, goal_squares, position):
                             piece.square_at(dir).h_location == position.h_location:
                         piece.set_neighbour(dir, position)
                         position.set_neighbour(dir, piece)
-        
+
         # balck pieces which are required to be removed
-        reduced_pieces = []                       
-        
+        reduced_pieces = []
+
         # if a black piece is removed
         for piece in new_board.pieces:
             if get_eliminated(piece) and piece.color is B:
             	# check this black piece's neighbours
                 black_piece_reduced(piece, goal_squares)
                 reduced_pieces.append(piece)
-        
+
         # remove the black pieces
         new_board.pieces = list(set(new_board.pieces) - set(reduced_pieces))
         # remove all neighbourhood of these black pieses
         for piece in reduced_pieces:
             remove_neighbours(new_board, piece, B)
-        
+
         # if the white piece is removed, return None
         if get_eliminated(position):
         	# remove neighbourhood of the white piece
@@ -74,13 +73,13 @@ def limited_dfs(new_board, depth, visited_list, goal_squares, position):
                 new_board.pieces.append(i)
                 goal_squares.pop()
             return
-        
+
         for piece in new_board.pieces:
             if piece.color is B:
                 for dir in range(LEFT, LEFT2 + 1):
                     if piece.square_at(dir) and isinstance(piece.square_at(dir), Square):
                         limited_dfs(new_board, depth - 1, goal_squares, piece.square_at(dir))
-                        
+
     # if reaches to limit, return None
     else:
         return

@@ -118,10 +118,38 @@ def find_solution(board, visited_list):
 
     return True
 
+def set_neighbour(piece, dir, list):
+    if dir == LEFT and piece.left is None:
+        piece.left = occupied(piece, dir, list)
+    if dir == RIGHT and piece.right is None:
+        piece.right = occupied(piece, dir, list)
+    if dir == TOP and piece.top is None:
+        piece.top = occupied(piece, dir, list)
+    if dir == BOTTOM and piece.bottom is None:
+        piece.bottom = occupied(piece, dir, list)
+
+def remove_white_neighbours(new_board):
+    for piece in new_board.pieces:
+        for dir in range(LEFT, BOTTOM + 1):
+            if isinstance(piece.square_at(dir), Piece) and piece.square_at(dir).color is W:
+                piece.set_neighbour(dir, None)
 
 
+# these two priority methods slow down limited DFS a lot
+def clear_priority(new_board):
+    for piece in new_board.pieces:
+        if piece.color is B or piece.color is X:
+            for dir in range(LEFT, BOTTOM + 1):
+                if isinstance(piece.square_at(dir), Square):
+                    piece.square_at(dir).priority = 0
 
 
+def set_priority(new_board):
+    for piece in new_board.pieces:
+        if piece.color is B or piece.color is X:
+            for dir in range(LEFT, BOTTOM + 1):
+                if isinstance(piece.square_at(dir), Square):
+                    piece.square_at(dir).priority += 1
 
 # This function returns the number of White Pieces on any given Board
 def num_white_pieces(board):

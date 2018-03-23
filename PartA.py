@@ -216,10 +216,13 @@ def find_solution(new_board, visited_list):
 
 
 def remove_white_pieces(new_board):
+
+
     white_pieces = []
     for piece in new_board.pieces:
         if piece.color is W:
             white_pieces.append(piece)
+
 
     return list(set(new_board.pieces) - set(white_pieces))
 

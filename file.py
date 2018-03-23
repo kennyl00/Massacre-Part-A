@@ -3,6 +3,10 @@
 
 from board import *
 
+
+# Still have to implement a function that takes in either Moves or Massacre
+
+
 # Reads the board configuration from a file and recreates the actual Board
 def read_file(file_name, new_board):
 
@@ -24,6 +28,7 @@ def read_file(file_name, new_board):
         for j in range(len(content[i])):
 
             # Place the appropriate Pieces on the Board accordingly
+            # The CORNER is considered a Piece
             if content[i][j] == 'X':
                 new_board.add_to_pieces(Piece(j, i, CORNER))
 

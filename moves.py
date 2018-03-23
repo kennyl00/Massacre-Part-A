@@ -14,7 +14,7 @@ def count_legal_move(new_board, color):
 
             # Check the Piece's Direction (TOP, BOTTOM, LEFT, RIGHT)
             # has an Object
-            # Since there are CORNERS and Pieces on the edge do not necessarily
+            # Since there are CORNERS and Pieces on the sides do not necessarily
             # have neighbours
 
             # If the Piece's LEFT has an Object

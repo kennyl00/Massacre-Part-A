@@ -1,40 +1,57 @@
 
 from board import *
 
-def determinate_goals(board):
+# This function returns a List filled with Square positions that would lead to
+# the elimination of a Target Piece
+def determinate_goals(board, target_color):
 
-    # Goal Squares are defined as Squares the would lead to the elimination of
-    # Pieces
+    depth = None;
 
-    # Get the number of White Pieces on the Board
-    num_white = num_white_pieces(board)
+    # If the Target is Black
+    if target_color is BLACK:
+        # Get the number of White Pieces on the Board
+        depth = num_pieces(board, WHITE)
+        # Remove all the White Neighbours from Black Pieces
+        remove_neighbours(board, BLACK, WHITE)
 
-    # Remove all the White Neighbours from Black Pieces
-    remove_neighbours(board, BLACK, WHITE)
+    # If the Target is White
+    else:
+        # Get the number of Black Pieces on the Board
+        depth = num_pieces(board, BLACK)
+        # Remove all the Black Neighbours from White Pieces
+        remove_neighbours(board, WHITE, BLACK)
 
-
-    
-    # two white pieces is sufficient to complete the all targets
-    if num_white > 2:
-        num_white = 2
+    # We need at most 2 Pieces to eliminate all targets
+    if depth > 2:
+        depth = 2
 
     # List of Goal Squares
+    # They are defined as Squares the would lead to the elimination of a Piece
     goal_squares = []
 
-    # loop over all neighbours of black pieces and use limited dps to search
-    # desirable destinations
-    for piece in new_board.pieces:
-        if piece.color is B:
-        	# loop over directions both on clockwise and anticlockwise
-            for dir in range(LEFT, LEFT2 + 1):
-            	# only squares could be destinations
-                if piece.square_at(dir) and isinstance(piece.square_at(dir), Square):
-                    limited_dfs(new_board, num_white, goal_squares, piece.square_at(dir))
+    # For every Piece on the Board
+    for piece in board.pieces:
+
+        # If the Piece is Black
+        if piece.color is BLACK:
+
+            # Loop over all the Directions of said Piece
+            for dir in range(LEFT, BOTTOM):
+
+                # Get the Object at that Direction
+                dir_obj = piece.square_at(dir)
+
+            	# Check if the Direction is a Square
+                if dir_obj and isinstance(dir_obj, Square):
+
+                    # Use Limited Depth First Search
+                    limited_dfs(board, depth, goal_squares, dir_obj)
 
     return goal_squares
 
 
-# Remove a Colored neighbour (White/ Black)
+
+# Remove a Colored neighbour
 def remove_neighbours(board, piece_color, neighbour_color):
 
     # For every Piece on the board
@@ -69,8 +86,9 @@ def remove_neighbours(board, piece_color, neighbour_color):
 
 
 
-# This Function utilises Limited Depth First Search
+
 def limited_dfs(new_board, depth, visited_list, goal_squares, position):
+
 	# if a solution if found, return the goal_squares
     if find_solution(new_board):
         return goal_squares
@@ -132,6 +150,13 @@ def find_solution(new_board):
             return False
     return True
 
+# This function returns the number of a Colored Piece on the Board
+def num_white_pieces(board, color):
+    num = 0
+    for piece in board.pieces:
+        if piece.color is color:
+            num += 1
+    return num
 
 def set_neighbour(piece, dir, list):
     if dir == LEFT and piece.left is None:
@@ -142,14 +167,3 @@ def set_neighbour(piece, dir, list):
         piece.top = occupied(piece, dir, list)
     if dir == BOTTOM and piece.bottom is None:
         piece.bottom = occupied(piece, dir, list)
-
-
-
-
-# This function returns the number of White Pieces on any given Board
-def num_white_pieces(board):
-    num = 0
-    for piece in board.pieces:
-        if piece.color is WHITE:
-            num += 1
-    return num

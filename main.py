@@ -20,10 +20,10 @@ def main():
 
     print(count_legal_move(board, WHITE))
     print(count_legal_move(board, BLACK))
-    
+
     goal_squares = []
     # Find goals that white pieces should go to
-    goal_squares = determinate_goals(board)
+    goal_squares = determinate_goals(board, BLACK)
 
 
 

@@ -2,13 +2,18 @@
 from board import *
 
 def determinate_goals(board):
+
     # Goal Squares are defined as Squares the would lead to the elimination of
     # Pieces
-    # Remove White Piece neighbours of all pieces
-    num_white = num_white_pieces(new_board)
-    for piece in new_board.pieces:
-        remove_neighbours(new_board, piece, W)
 
+    # Get the number of White Pieces on the Board
+    num_white = num_white_pieces(board)
+
+    # Remove all the White Neighbours from Black Pieces
+    remove_neighbours(board, BLACK, WHITE)
+
+
+    
     # two white pieces is sufficient to complete the all targets
     if num_white > 2:
         num_white = 2
@@ -27,6 +32,41 @@ def determinate_goals(board):
                     limited_dfs(new_board, num_white, goal_squares, piece.square_at(dir))
 
     return goal_squares
+
+
+# Remove a Colored neighbour (White/ Black)
+def remove_neighbours(board, piece_color, neighbour_color):
+
+    # For every Piece on the board
+    for piece in board.pieces:
+
+        if piece.color is piece_color:
+
+            # For every Direction of the Piece
+            for dir in range(LEFT, BOTTOM+1):
+
+                # Get the Object at that Direction
+                neighbour = piece.square_at(dir)
+
+                # If the Object is a Piece and the Color is right
+                if isinstance(neighbour, Piece) and neighbour.color is neighbour_color:
+
+                    # Create a new Square at that location
+                    if dir == LEFT:
+                        new_square = Square(piece.left.v_location, piece.left.h_location)
+
+                    if dir == TOP:
+                        new_square = Square(piece.top.v_location, piece.top.h_location)
+
+                    if dir == RIGHT:
+                        new_square = Square(piece.right.v_location, piece.right.h_location)
+
+                    if dir == BOTTOM:
+                        new_square = Square(piece.bottom.v_location, piece.bottom.h_location)
+
+                    # Replace the Piece's Direction from a Colored Piece to a Square
+                    piece.set_neighbour(dir, new_square)
+
 
 
 # This Function utilises Limited Depth First Search
@@ -104,17 +144,6 @@ def set_neighbour(piece, dir, list):
         piece.bottom = occupied(piece, dir, list)
 
 
-# remove all neighbourhood for a certain color or a certain piecee\
-def remove_neighbours(new_board, this_piece, color):
-    for piece in new_board.pieces:
-    	# loop over directions both on clockwise and anticlockwise
-        for dir in range(LEFT, LEFT2 + 1):
-            if isinstance(piece.square_at(dir), Piece) and piece.square_at(dir).color is color:
-                if piece.square_at(dir).v_location == this_piece.v_location and \
-                        piece.square_at(dir).h_location == this_piece.h_location:
-                        # create a square if a piece is reomved and construct neighbourhood
-                        new_square = Square(piece.square_at(dir).v_location, piece.square_at(dir).h_location)
-                        piece.set_neighbour(dir, new_square)
 
 
 # This function returns the number of White Pieces on any given Board

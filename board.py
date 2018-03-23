@@ -46,7 +46,7 @@ class Piece:
     v_location = None
     h_location = None
 
-    # The surroundings of this Piece
+    # The Objects surroundings of this Piece
     left = None
     right = None
     top = None
@@ -64,8 +64,8 @@ class Piece:
         self.h_location = h
         self.color = color
 
-
-    def square_at(self, dir):
+    # Returns the Object at that particular Direction
+    def get_neighbour(self, dir):
         if dir == LEFT:
             return self.left
         if dir == RIGHT:
@@ -75,7 +75,9 @@ class Piece:
         if dir == BOTTOM:
             return self.bottom
 
-    def opposite_of(self, dir):
+    # If there's an Object at the specified Direction,
+    # return the Object opposite of said Direction
+    def get_opposite_neighbour(self, dir):
         if dir == LEFT and self.left:
             return self.right
         if dir == RIGHT and self.right:

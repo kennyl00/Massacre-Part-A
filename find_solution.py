@@ -47,6 +47,7 @@ def find_solution(board, target_color, fighter_color):
                 # Make sure the move doesn't get eliminated
 
             # Check the game if any of the Target has been eliminated
+            # if it has reduce target num 
 
 
 

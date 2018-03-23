@@ -45,58 +45,39 @@ def determinate_goals(board, target_color):
                 if dir_obj and isinstance(dir_obj, Square):
 
                     # Use Limited Depth First Search
-                    limited_dfs(board, depth, goal_squares, dir_obj)
+                    limited_dfs(board, depth, goal_squares, dir_obj, target_color)
 
     return goal_squares
 
+# Checks the Board if the target Piece still exist
+def find_solution(new_board, target_color):
+
+    # For every Piece on the Board
+    for piece in new_board.pieces:
+
+        # If the Piece is Black
+        if piece.color is target_color:
+
+            # If there is still a target Piece
+            return False
+
+    # If all the target Piece has been eliminated from the Board
+    # Return true
+    return True
 
 
-# Remove a Colored neighbour
-def remove_neighbours(board, piece_color, neighbour_color):
+def limited_dfs(new_board, depth, visited_list, goal_squares, position, target_color):
 
-    # For every Piece on the board
-    for piece in board.pieces:
-
-        if piece.color is piece_color:
-
-            # For every Direction of the Piece
-            for dir in range(LEFT, BOTTOM+1):
-
-                # Get the Object at that Direction
-                neighbour = piece.square_at(dir)
-
-                # If the Object is a Piece and the Color is right
-                if isinstance(neighbour, Piece) and neighbour.color is neighbour_color:
-
-                    # Create a new Square at that location
-                    if dir == LEFT:
-                        new_square = Square(piece.left.v_location, piece.left.h_location)
-
-                    if dir == TOP:
-                        new_square = Square(piece.top.v_location, piece.top.h_location)
-
-                    if dir == RIGHT:
-                        new_square = Square(piece.right.v_location, piece.right.h_location)
-
-                    if dir == BOTTOM:
-                        new_square = Square(piece.bottom.v_location, piece.bottom.h_location)
-
-                    # Replace the Piece's Direction from a Colored Piece to a Square
-                    piece.set_neighbour(dir, new_square)
-
-
-
-
-def limited_dfs(new_board, depth, visited_list, goal_squares, position):
-
-	# if a solution if found, return the goal_squares
-    if find_solution(new_board):
+    # If all target Piece has been wiped out from the Board
+    if find_solution(new_board, target_color):
         return goal_squares
 
-    # if haven't reach limit
+    # If Depth limit has not been met
     if not depth == 0:
-    	# create a new white piece at the required position
-        position = Piece(position.v_location, position.h_location, W)
+
+        # Create a new White Piece at the Required Position
+        position = Piece(position.v_location, position.h_location, WHITE)
+
         # construst neighbourhood for the white piece
         for piece in new_board.pieces:
             for dir in range(LEFT, LEFT2 + 1):
@@ -143,12 +124,40 @@ def limited_dfs(new_board, depth, visited_list, goal_squares, position):
         return
 
 
-# if all black pieces are eliminated
-def find_solution(new_board):
-    for piece in new_board.pieces:
-        if piece.color is B:
-            return False
-    return True
+# Remove a Colored neighbour
+def remove_neighbours(board, piece_color, neighbour_color):
+
+    # For every Piece on the board
+    for piece in board.pieces:
+
+        if piece.color is piece_color:
+
+            # For every Direction of the Piece
+            for dir in range(LEFT, BOTTOM+1):
+
+                # Get the Object at that Direction
+                neighbour = piece.square_at(dir)
+
+                # If the Object is a Piece and the Color is right
+                if isinstance(neighbour, Piece) and neighbour.color is neighbour_color:
+
+                    # Create a new Square at that location
+                    if dir == LEFT:
+                        new_square = Square(piece.left.v_location, piece.left.h_location)
+
+                    if dir == TOP:
+                        new_square = Square(piece.top.v_location, piece.top.h_location)
+
+                    if dir == RIGHT:
+                        new_square = Square(piece.right.v_location, piece.right.h_location)
+
+                    if dir == BOTTOM:
+                        new_square = Square(piece.bottom.v_location, piece.bottom.h_location)
+
+                    # Replace the Piece's Direction from a Colored Piece to a Square
+                    piece.set_neighbour(dir, new_square)
+
+
 
 # This function returns the number of a Colored Piece on the Board
 def num_white_pieces(board, color):

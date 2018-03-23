@@ -8,9 +8,9 @@ LEFT = 0
 TOP = 1
 RIGHT = 2
 BOTTOM = 3
-W = 'W'
-B = 'B'
-X = 'X'
+WHITE = 'W'
+BLACK = 'B'
+CORNER = 'X'
 
 # a class contains two pieces
 class Goals:
@@ -80,14 +80,9 @@ class Piece:
         self.h_location = h
         self.color = color
 
-<<<<<<< HEAD
     # Returns the Object at that particular Direction
-    def get_neighbour(self, dir):
-        if dir == LEFT:
-=======
     def square_at(self, dir):
         if dir == LEFT or dir == LEFT2:
->>>>>>> 20e534379be88abac0f5e867d063298662989501
             return self.left
         if dir == RIGHT or dir == RIGHT2:
             return self.right
@@ -96,31 +91,27 @@ class Piece:
         if dir == BOTTOM or dir == BOTTOM2:
             return self.bottom
 
-<<<<<<< HEAD
+
     # If there's an Object at the specified Direction,
     # return the Object opposite of said Direction
-    def get_opposite_neighbour(self, dir):
-        if dir == LEFT and self.left:
-=======
     def opposite_of(self, dir):
-        if dir == LEFT or dir == LEFT2 and self.left:
->>>>>>> 20e534379be88abac0f5e867d063298662989501
+        if dir == LEFT and self.left:
             return self.right
-        if dir == RIGHT or dir == RIGHT2 and self.right:
+        if dir == RIGHT and self.right:
             return self.left
-        if dir == TOP or dir == TOP2 and self.top:
+        if dir == TOP and self.top:
             return self.bottom
-        if dir == BOTTOM or dir == BOTTOM2 and self.bottom:
+        if dir == BOTTOM and self.bottom:
             return self.top
 
     # This function sets the Piece's Direction (TOP, BOTTOM, LEFT, RIGHT) to
     # to a given object (Piece, Square)
     def set_neighbour(self, dir, neighbour):
-        if dir == LEFT or dir == LEFT2:
+        if dir == LEFT:
             self.left = neighbour
-        if dir == RIGHT or dir == RIGHT2:
+        if dir == RIGHT:
             self.right = neighbour
-        if dir == TOP or dir == TOP2:
+        if dir == TOP:
             self.top = neighbour
-        if dir == BOTTOM or dir == BOTTOM2:
+        if dir == BOTTOM:
             self.bottom = neighbour

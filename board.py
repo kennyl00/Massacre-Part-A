@@ -43,6 +43,16 @@ class Board:
         self.pieces.append(piece)
 
 
+class Move:
+    v_location = None
+    h_location = None
+
+    utility = 0
+
+    def __init__(self, v, h):
+        self.v_location = v
+        self.h_location = h
+
 class Square:
     # Coordinates of each Square
     v_location = None
@@ -82,13 +92,13 @@ class Piece:
 
     # Returns the Object at that particular Direction
     def square_at(self, dir):
-        if dir == LEFT or dir == LEFT2:
+        if dir == LEFT:
             return self.left
-        if dir == RIGHT or dir == RIGHT2:
+        if dir == RIGHT:
             return self.right
-        if dir == TOP or dir == TOP2:
+        if dir == TOP:
             return self.top
-        if dir == BOTTOM or dir == BOTTOM2:
+        if dir == BOTTOM:
             return self.bottom
 
 

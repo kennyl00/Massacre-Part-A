@@ -160,7 +160,7 @@ def remove_neighbours(board, piece_color, neighbour_color):
 
 
 # This function returns the number of a Colored Piece on the Board
-def num_white_pieces(board, color):
+def num_pieces(board, color):
     num = 0
     for piece in board.pieces:
         if piece.color is color:

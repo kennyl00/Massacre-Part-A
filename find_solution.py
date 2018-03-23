@@ -42,12 +42,13 @@ def find_solution(board, target_color, fighter_color):
                     if occupied(move, dir, target_list):
                         move.utility += 1;
 
+
             # Move the Piece to the highest Utility move
                 # When moving create Piece at the Move and create Square at the Piece
-                # Make sure the move doesn't get eliminated
+                # Make sure the Piece doesn't get eliminated after moving
 
             # Check the game if any of the Target has been eliminated
-            # if it has reduce target num 
+            # if it has reduce target num
 
 
 

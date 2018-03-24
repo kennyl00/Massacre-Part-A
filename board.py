@@ -1,30 +1,16 @@
 # This File defines Global Variables and Classes used for the
 # Project Part A
 # Created by JiaWei and Kenny (20/3/18)
-
 BOARD_COL_NUM = 8
 BOARD_ROW_NUM = 8
 LEFT = 0
 TOP = 1
 RIGHT = 2
 BOTTOM = 3
-WHITE = 'W'
-BLACK = 'B'
-CORNER = 'X'
-
-# a class contains two pieces
-class Goals:
-    piece1 = None
-    piece2 = None
-
-    def __init__(self):
-        assert 1 == 1
-
-    def set_piece1(self, piece1):
-        self.piece1 = piece1
-
-    def set_piece2(self, piece2):
-        self.piece2 = piece2
+TOP_LEFT = 4
+TOP_RIGHT = 5
+BOTTOM_LEFT = 6
+BOTTOM_RIGHT = 7
 
 
 class Board:
@@ -77,6 +63,13 @@ class Piece:
     right = None
     top = None
     bottom = None
+    color = None
+    top_left = None
+    top_right = None
+    bottom_left = None
+    bottom_right = None
+    removable = False
+    priority = 0
 
     # Piece could either be Black or White
     color = None

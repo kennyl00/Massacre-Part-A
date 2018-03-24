@@ -78,6 +78,7 @@ class Piece:
     bottom_right = None
     removable = False
     priority = 0
+    cost_to_move = 0
 
     # Piece could either be Black or White
     color = None

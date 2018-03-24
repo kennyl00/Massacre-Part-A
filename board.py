@@ -10,7 +10,7 @@ BOTTOM = 3
 TOP_LEFT = 4
 TOP_RIGHT = 5
 BOTTOM_LEFT = 6
-BOTTOM_RIGHT = 2
+BOTTOM_RIGHT = 7
 CORNER = 'X'
 BLACK = 'B'
 WHITE = 'W'
@@ -127,3 +127,10 @@ class Piece:
             self.top = neighbour
         if dir == BOTTOM:
             self.bottom = neighbour
+
+    def manhattan(self, new_board):
+        for square in new_board:
+            square.priority = abs(self.x - square.x) + abs(self.y - square.y)
+
+        for piece in new_board:
+            piece.priority = abs(self.x - piece.x) + abs(self.y - piece.y)

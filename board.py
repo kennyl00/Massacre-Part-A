@@ -31,7 +31,6 @@ class Goals:
 
 
 
-
 class Board:
     # List of Squares and Pieces
     squares = []
@@ -128,6 +127,7 @@ class Piece:
         if dir == BOTTOM:
             self.bottom = neighbour
 
+    # This function assigns each Square and Piece to a priority relative to the individual Piece
     def manhattan(self, new_board):
         for square in new_board:
             square.priority = abs(self.x - square.x) + abs(self.y - square.y)

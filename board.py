@@ -14,6 +14,9 @@ BOTTOM_RIGHT = 7
 CORNER = 'X'
 BLACK = 'B'
 WHITE = 'W'
+YES = 'Y'
+NO = 'N'
+JUMP = 'J'
 
 
 class Goals:

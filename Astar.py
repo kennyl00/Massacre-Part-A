@@ -8,11 +8,13 @@ def astar(start, goal, new_board):
 
     for dir in range(LEFT, BOTTOM + 1):
         if check_move(current, dir, BLACK) is YES
+            successor = current.square_at(dir)
+            if successor.x == goal.x and \
+                successor.y == goal.y
 
-        if current.square_at(dir).x == goal.x and \
-            current.square_at(dir).y == goal.y
+                goal.cost_to_move = successor.cost_to_move
 
-            goal.cost_to_move = current.square_at(dir).cost_to_move
+                current
 
 
 

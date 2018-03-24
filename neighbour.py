@@ -29,6 +29,19 @@ def find_neighbour(new_board):
                 piece.set_neighbour(dir, other_square)
 
 
+def find_square_neighbour(square, dir, new_board):
+    # Check if there is an object at that direction
+    other_piece = occupied(piece, dir, new_board.pieces)
+    # See if the Direction is occupied by a Piece
+    if(other_piece):
+        return other_piece
+
+    # If not, see if the Direction is occupied by a Square
+    else:
+        other_square = occupied(piece, dir, new_board.squares)
+        return other_piece
+
+
 # This function takes in a Piece and goes through either the Board's
 # Piece or Square List to check what (obj) is occupying the Piece's Direction
 def occupied(piece, dir, list):

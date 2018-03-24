@@ -17,6 +17,7 @@ WHITE = 'W'
 YES = 'Y'
 NO = 'N'
 JUMP = 'J'
+MAX_MOVE = 64
 
 
 class Goals:
@@ -54,9 +55,11 @@ class Square:
     # Coordinates of each Square
     x = None
     y = None
-
+    cost_to_move = 0
     # the priority of each square to be placed on by a piece
     priority = 0
+
+    parent= None
 
     # Initialises the Square with it's own coordinates
     def __init__(self, x, y):
@@ -144,7 +147,7 @@ class Piece:
             self.bottom_right = neighbour
 
     # This function assigns each Square and Piece to a priority relative to the individual Piece
-    def manhattan(self, new_board):
+    def set_priority(self, new_board):
         for square in new_board:
             square.priority = abs(self.x - square.x) + abs(self.y - square.y)
 

@@ -6,8 +6,18 @@ def astar(start, goal, new_board):
 
     openset.append(current)
 
-    current
+    for dir in range(LEFT, BOTTOM + 1):
+        if check_move(current, dir, BLACK) is YES
 
+        if current.square_at(dir).x == goal.x and \
+            current.square_at(dir).y == goal.y
+
+            goal.cost_to_move = current.square_at(dir).cost_to_move
+
+
+
+
+    return
 
 
 def clear_priority(new_board):

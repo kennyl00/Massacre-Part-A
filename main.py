@@ -22,7 +22,7 @@ def main():
     print(count_legal_move(board, BLACK))
 
     goal_squares = []
-
+    determinate_goals(board, BLACK)
 
 
 

@@ -19,23 +19,23 @@ def read_file(file_name, new_board):
     content = [x.strip() for x in content]
 
     # For every row in the data (Board Config)
-    for i in range(len(content)):
+    for x in range(len(content)):
 
         # Split up the individual characters e.g. '-, X, O, @' of each row
-        content[i] = ''.join(content[i].split())
+        content[x] = ''.join(content[x].split())
 
         # For every character within a row
-        for j in range(len(content[i])):
+        for y in range(len(content[x])):
 
             # Place the appropriate Pieces on the Board accordingly
             # The CORNER is considered a Piece
-            if content[i][j] == 'X':
-                new_board.add_to_pieces(Piece(j, i, CORNER))
+            if content[x][y] == 'X':
+                new_board.add_to_pieces(Piece(x, y, CORNER))
 
-            elif content[i][j] == 'O':
-                new_board.add_to_pieces(Piece(j, i, WHITE))
+            elif content[x][y] == 'O':
+                new_board.add_to_pieces(Piece(x, y, WHITE))
 
-            elif content[i][j] == '@':
-                new_board.add_to_pieces(Piece(j, i, BLACK))
+            elif content[x][y] == '@':
+                new_board.add_to_pieces(Piece(x, y, BLACK))
 
-        print(content[i])
+        print(content[x])

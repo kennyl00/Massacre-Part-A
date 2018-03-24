@@ -11,6 +11,25 @@ TOP_LEFT = 4
 TOP_RIGHT = 5
 BOTTOM_LEFT = 6
 BOTTOM_RIGHT = 7
+CORNER = 'X'
+BLACK = 'B'
+WHITE = 'W'
+
+
+class Goals:
+    piece1 = None
+    piece2 = None
+
+    def __init__(self):
+        assert 1 == 1
+
+    def set_piece1(self, piece1):
+        self.piece1 = piece1
+
+    def set_piece2(self, piece2):
+        self.piece2 = piece2
+
+
 
 
 class Board:
@@ -20,43 +39,33 @@ class Board:
 
     # Initialises the Board with Squares, with the Dimensions provided (8,8)
     def __init__(self):
-        for i in range(0, BOARD_COL_NUM):
-            for j in range(0, BOARD_ROW_NUM):
-                self.squares.append(Square(i, j))
+        for x in range(0, BOARD_ROW_NUM):
+            for y in range(0, BOARD_COL_NUM):
+                self.squares.append(Square(x, y))
 
     # Adds a Piece to the Board's List
     def add_to_pieces(self, piece):
         self.pieces.append(piece)
 
 
-class Move:
-    v_location = None
-    h_location = None
-
-    utility = 0
-
-    def __init__(self, v, h):
-        self.v_location = v
-        self.h_location = h
-
 class Square:
     # Coordinates of each Square
-    v_location = None
-    h_location = None
+    x = None
+    y = None
 
     # the priority of each square to be placed on by a piece
     priority = 0
 
     # Initialises the Square with it's own coordinates
-    def __init__(self, v, h):
-        self.v_location = v
-        self.h_location = h
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
 
 class Piece:
     # Coordinates of each Piece
-    v_location = None
-    h_location = None
+    x = None
+    y = None
 
     # The Objects surroundings of this Piece
     left = None
@@ -78,9 +87,9 @@ class Piece:
     removable = False
 
     # Initialises the Piece by its own coordinates and color
-    def __init__(self, v, h, color):
-        self.v_location = v
-        self.h_location = h
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
         self.color = color
 
     # Returns the Object at that particular Direction

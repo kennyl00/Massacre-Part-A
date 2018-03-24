@@ -40,7 +40,7 @@ def determinate_goals(board, target_color):
                         # Check if the Direction is a Square
                         if dir_obj and isinstance(dir_obj, Square):
                             # Use Limited Depth First Search
-                            position = Piece(dir_obj.v_location, dir_obj.h_location, WHITE)
+                            position = Piece(dir_obj.x, dir_obj.y, WHITE)
                             limited_dfs(board, depth, goal_squares, position, None, target_color)
                             remove_neighbours(board, position, BLACK)
                             # check how many black piece left on board
@@ -50,11 +50,11 @@ def determinate_goals(board, target_color):
         print('result')
         for i in goal_squares:
 
-            print(i.piece1.v_location, i.piece1.h_location)
-            print(i.piece2.v_location, i.piece2.h_location)
+            print(i.piece1.x, i.piece1.y)
+            print(i.piece2.x, i.piece2.y)
 
         return goal_squares
-        
+
 # Checks the Board if the target Piece still exist
 def find_solution(new_board, target_color):
 
@@ -89,8 +89,8 @@ def limited_dfs(new_board, depth, goal_squares, position, old_position, target_c
             for dir in range(LEFT, BOTTOM + 1):
                 if piece.square_at(dir):
                     # if the constructed piece has the same location as one of the goal_square
-                    if piece.square_at(dir).v_location == position.v_location and \
-                            piece.square_at(dir).h_location == position.h_location:
+                    if piece.square_at(dir).x == position.x and \
+                            piece.square_at(dir).y == position.y:
                         # build neighbourhood
                         piece.set_neighbour(dir, position)
                         position.set_neighbour(dir, piece)
@@ -113,7 +113,7 @@ def limited_dfs(new_board, depth, goal_squares, position, old_position, target_c
             # remove neighbourhood of black pieces from position piece
             for dir in range(LEFT, BOTTOM + 1):
                 if position.square_at(dir) == piece:
-                    position.set_neighbour(dir, Square(piece.v_location, piece.h_location))
+                    position.set_neighbour(dir, Square(piece.x, piece.y))
 
         # if the white piece is removed, return None
         if get_eliminated(position) or get_eliminated(old_position) and depth == 1:
@@ -130,8 +130,8 @@ def limited_dfs(new_board, depth, goal_squares, position, old_position, target_c
                 for piece in new_board.pieces:
                     for dir in range(LEFT, BOTTOM + 1):
                         if piece.square_at(dir):
-                            if piece.square_at(dir).v_location == i.v_location and \
-                                    piece.square_at(dir).h_location == i.h_location:
+                            if piece.square_at(dir).x == i.x and \
+                                    piece.square_at(dir).y == i.y:
                                 piece.set_neighbour(dir, i)
                 new_board.pieces.append(i)
             return
@@ -145,10 +145,10 @@ def limited_dfs(new_board, depth, goal_squares, position, old_position, target_c
                         dir_obj = piece.square_at(dir)
 
                         # Create a new White Piece at the Required Position
-                        position2 = Piece(dir_obj.v_location, dir_obj.h_location, WHITE)
+                        position2 = Piece(dir_obj.x, dir_obj.y, WHITE)
 
                         limited_dfs(new_board, depth - 1, goal_squares, position2, position, target_color)
-                        remove_neighbours(board, position2, BLACK)
+                        remove_neighbours(new_board, position2, BLACK)
 
     # if reaches to limit, return None
     else:
@@ -162,12 +162,12 @@ def remove_neighbours(board, this_piece, color_to_remove):
         if piece.color is color_to_remove:
             for dir in range(LEFT, BOTTOM + 1):
                 # if the removed piece has the same location as a neighbour of a piece
-                if piece.square_at(dir) and piece.square_at(dir).v_location == this_piece.v_location and \
-                        piece.square_at(dir).h_location == this_piece.h_location:
+                if piece.square_at(dir) and piece.square_at(dir).x == this_piece.x and \
+                        piece.square_at(dir).y == this_piece.y:
                         # set the square of the same location on board as a neighbour
                         for square in board.squares:
-                            if square and square.v_location == this_piece.v_location and \
-                                    square.h_location == this_piece.h_location:
+                            if square and square.x == this_piece.x and \
+                                    square.y == this_piece.y:
                                 piece.set_neighbour(dir, square)
 
 
@@ -189,8 +189,8 @@ def set_neighbour(piece, dir, list):
         piece.top = occupied(piece, dir, list)
     if dir == BOTTOM and piece.bottom is None:
         piece.bottom = occupied(piece, dir, list)
-        
-        
+
+
 # if a black piece is removed
 def black_piece_reduced(piece, visited_list):
     goal = Goals()
@@ -198,14 +198,14 @@ def black_piece_reduced(piece, visited_list):
         # if both neighbour pieces are white add both to list
         if isinstance(piece.square_at(dir), Piece) and isinstance(piece.opposite_of(dir), Piece):
             if piece.square_at(dir).color is WHITE and piece.opposite_of(dir).color is WHITE:
-                goal.set_piece1(Piece(piece.square_at(dir).v_location, piece.square_at(dir).h_location, WHITE))
-                goal.set_piece2(Piece(piece.opposite_of(dir).v_location, piece.opposite_of(dir).h_location, WHITE))
+                goal.set_piece1(Piece(piece.square_at(dir).x, piece.square_at(dir).y, WHITE))
+                goal.set_piece2(Piece(piece.opposite_of(dir).x, piece.opposite_of(dir).y, WHITE))
 
             if piece.square_at(dir).color is CORNER and piece.opposite_of(dir).color is WHITE:
-                goal.set_piece1(Piece(piece.opposite_of(dir).v_location, piece.opposite_of(dir).h_location, WHITE))
+                goal.set_piece1(Piece(piece.opposite_of(dir).x, piece.opposite_of(dir).y, WHITE))
 
             if piece.square_at(dir).color is WHITE and piece.opposite_of(dir).color is CORNER:
-                goal.set_piece2(Piece(piece.square_at(dir).v_location, piece.square_at(dir).h_location, WHITE))
+                goal.set_piece2(Piece(piece.square_at(dir).x, piece.square_at(dir).y, WHITE))
 
     visited_list.append(goal)
 

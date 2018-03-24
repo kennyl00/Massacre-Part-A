@@ -8,12 +8,16 @@ from board import *
 # each Piece's neighbours
 def find_neighbour(new_board):
 
+
+    # top_left, top_right, bottom_left, bottom_right
+
     # For every piece in the Board's piece list
     for piece in new_board.pieces:
 
         # For every Piece's Direction (TOP, BOTTOM, LEFT, RIGHT)
-        for dir in range(LEFT, BOTTOM + 1):
+        for dir in range(LEFT, BOTTOM_RIGHT + 1):
 
+            # Check if there is an object at that direction
             other_piece = occupied(piece, dir, new_board.pieces)
 
              # See if the Direction is occupied by a Piece
@@ -28,6 +32,8 @@ def find_neighbour(new_board):
                 piece.set_neighbour(dir, other_square)
 
 
+
+
 # This function takes in a Piece and goes through either the Board's
 # Piece or Square List to check what (obj) is occupying the Piece's Direction
 # (TOP, BOTTOM, LEFT, RIGHT)
@@ -37,20 +43,20 @@ def occupied(piece, dir, list):
     for obj in list:
 
         # Return the object if it is at the Direction of the Piece
-        if (piece.v_location + delta_v(dir)) == obj.v_location and (piece.h_location + delta_h(dir)) == obj.h_location:
+        if (piece.x + delta_x(dir)) == obj.x and (piece.y + delta_y(dir)) == obj.y:
             return obj
 
     return None
 
-def delta_v(dir):
+def delta_y(dir):
     if dir == TOP:
-        return 1
-    if dir == BOTTOM:
         return -1
+    if dir == BOTTOM:
+        return 1
+        
     return 0
 
-
-def delta_h(dir):
+def delta_x(dir):
     if dir == RIGHT:
         return 1
     if dir == LEFT:

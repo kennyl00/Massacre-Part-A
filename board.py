@@ -127,6 +127,18 @@ class Piece:
         if dir == BOTTOM:
             self.bottom = neighbour
 
+        if dir == TOP_LEFT:
+            self.top_left = neighbour
+
+        if dir == TOP_RIGHT:
+            self.top_right = neighbour
+
+        if dir == BOTTOM_LEFT:
+            self.bottom_left
+
+        if dir == BOTTOM_RIGHT:
+            self.bottom_right
+
     # This function assigns each Square and Piece to a priority relative to the individual Piece
     def manhattan(self, new_board):
         for square in new_board:

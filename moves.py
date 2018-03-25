@@ -74,13 +74,20 @@ def get_goal(board, target_color):
                     # If the LEFT of Target Piece is Square and the RIGHT is a Piece
                     elif check_move(piece, LEFT, target_color) == YES and isinstance(piece.square_at(RIGHT), Piece):
                         # and if the RIGHT Piece is not a Target
-                        if not piece.square_at(RIGHT).color == target_color:
-                            goal_squares.append(Goal(piece.square_at(LEFT), None, piece))
+                        if piece.square_at(RIGHT).color == WHITE:
+                            goal_squares.append(Goal(piece.square_at(LEFT), piece.square_at(RIGHT), piece))
+                            break
+
+                        else:
+                            goal_squares.append(Goal(piece.square_at(LEFT), piece))
                             break
 
                     # If the RIGHT of the Target Piece is Square and the LEFT is a Piece
                     elif check_move(piece, RIGHT, target_color) == YES and isinstance(piece.square_at(LEFT), Piece):
-                        if not piece.square_at(LEFT).color == target_color:
+                        if piece.square_at(LEFT).color == WHITE:
+                            goal_squares.append(Goal(piece.square_at(RIGHT), piece.square_at(LEFT), piece))
+                            break
+                        else:
                             goal_squares.append(Goal(piece.square_at(RIGHT), None, piece))
                             break
 
@@ -90,11 +97,16 @@ def get_goal(board, target_color):
 
 
                     elif check_move(piece, TOP, target_color) == YES and isinstance(piece.square_at(BOTTOM), Piece):
-                        if not piece.square_at(BOTTOM).color == target_color:
-                            goal_squares.append(Goal(piece.square_at(TOP), None, piece))
+                        if piece.square_at(BOTTOM).color == WHITE:
+                            goal_squares.append(Goal(piece.square_at(TOP), piece.square_at(BOTTOM), piece))
+
+                        else:
+                            goal_squares.append(Goal(piece.square_t(TOP), None, piece)
 
                     elif check_move(piece, BOTTOM, target_color) == YES and isinstance(piece.square_at(TOP), Piece):
-                        if not piece.square_at(TOP).color == target_color:
+                        if piece.square_at(TOP).color == WHITE:
+                            goal_squares.append(Goal(piece.square_at(BOTTOM), piece.square_at(TOP), piece))
+                        else:
                             goal_squares.append(Goal(piece.square_at(BOTTOM), None, piece))
 
 

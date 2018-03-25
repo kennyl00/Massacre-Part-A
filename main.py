@@ -35,12 +35,12 @@ def main():
         if piece.x == 2 and piece.y == 5:
             start_piece = piece
 
-    path = []
-    path = astar(start_piece, start_square, goal_square, board)
 
-    print('result')
-    for i in path:
-        print(i.y, i.x)
 
+    goal_list = get_goal(board, BLACK)
+
+
+    for goal in goal_list:
+        print(goal.square1.y, goal.square1.x, "||||", goal.square2.y, goal.square2.x)
 
 main()

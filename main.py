@@ -2,7 +2,6 @@ from neighbour import *
 from board import *
 from file import *
 from moves import *
-from goal import *
 from Astar import *
 import sys
 

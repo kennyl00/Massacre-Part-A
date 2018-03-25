@@ -1,10 +1,11 @@
 from board import *
+from moves import *
 
 def astar(start_piece, start_square, goal_square, new_board):
-    openset = set()
-    closedset = set()
+    openset = []
+    closedset = []
     path = [] # to print the path to current state
-    openset.add(start_square)
+    openset.append(start_square)
 
     while not len(openset) == 0:
         # pop a square from openset
@@ -18,24 +19,30 @@ def astar(start_piece, start_square, goal_square, new_board):
                 path.append(current_square)
                 current_square = current_square.parent
             path.append(current_square)
+
             return path
+        print(len(openset))
+        openset.extend(get_available_neighbours(start_piece, current_square, new_board, openset, closedset))
+        print(len(openset))
+        closedset.append(current_square)
 
-        openset.add(get_available_neighbours(start_piece, current_square, new_board, openset, closedset))
-
-        closedset.add(current_square)
-
-        for square in path:
-            print(square.x, square.y)
     return
 
 
 def get_available_neighbours(start_piece, current_square, new_board, openset, closedset):
     # a list of neghbours to be added to openset
     neighbours_to_add = []
+
+    print('start_piece', start_piece.y, start_piece.x) 
     for dir in range(LEFT, BOTTOM + 1):
+
+
+
         # if current_square can move to a neighbour
         if get_square(start_piece, dir, BLACK):
             neighbour = get_square(start_piece, dir, BLACK)
+            print(neighbour.x,neighbour.y)
+
             neighbour.cost_to_move = current_square.cost_to_move + 1
             # if neighbour in the openset and neighbour has a bigger f
             if bigger_than_in_set(neighbour, openset):
@@ -48,7 +55,7 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
                 neighbour.parent = current_square
                 neighbours_to_add.append(neighbour)
 
-        return neighbours_to_add
+    return neighbours_to_add
 
 
 def bigger_than_in_set(neighbour, set):

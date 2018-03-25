@@ -105,12 +105,18 @@ def get_goal(board, target_color):
 def get_square(piece, dir, target_color):
 
     if check_move(piece, dir, target_color) == YES:
+
+        print("YESS")
         return piece.square_at(dir)
 
     elif check_move(piece, dir, target_color) == JUMP:
-        return piece.square_at(dir).square_at(dir) 
+        print("JUMMP")
+        return piece.square_at(dir).square_at(dir)
 
-    return None
+    elif check_move(piece, dir, target_color) == NO:
+
+        print("NOOO")
+        return  None
 
 
 def check_move(piece, dir, target_color):

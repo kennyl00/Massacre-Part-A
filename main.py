@@ -22,24 +22,23 @@ def main():
     find_neighbour(board)
 
 
-# Read the file and set up the Board with Squares and Pieces
-    OUTPUT_STATE = read_file(file, board)
-
     start_square = None
     goal_square = None
     start_piece = None
     for piece in board.squares:
         if piece.x == 2 and piece.y == 5:
             start_square = piece
-        if piece.x ==  5 and piece.y == 7:
+        if piece.x ==  3 and piece.y == 4:
             goal_square = piece
 
     for piece in board.pieces:
         if piece.x == 2 and piece.y == 5:
             start_piece = piece
+
     path = []
     path = astar(start_piece, start_square, goal_square, board)
 
+    print('result')
     for i in path:
         print(i.y, i.x)
 

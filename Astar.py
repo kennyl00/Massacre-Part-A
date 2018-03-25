@@ -1,5 +1,6 @@
 from board import *
 from moves import *
+from neighbour import *
 
 def astar(start_piece, start_square, goal_square, new_board):
     openset = []
@@ -11,8 +12,9 @@ def astar(start_piece, start_square, goal_square, new_board):
         # pop a square from openset
         current_square = openset.pop()
 
-        start_piece.x = current_square.x
-        start_piece.y = current_square.y
+        print(current_square.y, current_square.x)
+
+        move(start_piece, current_square, new_board)
 
         if start_piece.x == goal_square.x and start_piece.y == goal_square.y:
             while current_square.parent:
@@ -21,9 +23,8 @@ def astar(start_piece, start_square, goal_square, new_board):
             path.append(current_square)
 
             return path
-        print(len(openset))
+
         openset.extend(get_available_neighbours(start_piece, current_square, new_board, openset, closedset))
-        print(len(openset))
         closedset.append(current_square)
 
     return
@@ -33,15 +34,11 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
     # a list of neghbours to be added to openset
     neighbours_to_add = []
 
-    print('start_piece', start_piece.y, start_piece.x) 
     for dir in range(LEFT, BOTTOM + 1):
 
-
-
+        neighbour = get_square(start_piece, dir, BLACK)
         # if current_square can move to a neighbour
-        if get_square(start_piece, dir, BLACK):
-            neighbour = get_square(start_piece, dir, BLACK)
-            print(neighbour.x,neighbour.y)
+        if neighbour:
 
             neighbour.cost_to_move = current_square.cost_to_move + 1
             # if neighbour in the openset and neighbour has a bigger f
@@ -80,3 +77,10 @@ def clear_parent(new_board):
 
     for square in new_board.pieces:
         square.parent = None
+
+
+def move(start_piece, current_square, new_board):
+    start_piece.x = current_square.x
+    start_piece.y = current_square.y
+
+    find_neighbour(new_board)

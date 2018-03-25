@@ -103,24 +103,18 @@ def get_goal(board, target_color):
 # This function will return a Square in any Direction unless it is Blocked by
 # a Piece and can't be Jumped Over
 def get_square(piece, dir, target_color):
-
     if check_move(piece, dir, target_color) == YES:
-
-        print("YESS")
         return piece.square_at(dir)
 
     elif check_move(piece, dir, target_color) == JUMP:
-        print("JUMMP")
         return piece.square_at(dir).square_at(dir)
 
     elif check_move(piece, dir, target_color) == NO:
 
-        print("NOOO")
         return  None
 
 
 def check_move(piece, dir, target_color):
-
     # First check if the move is possible
     if check_valid_move(piece, dir):
         # Check if move could be eliminated
@@ -137,7 +131,6 @@ def check_move(piece, dir, target_color):
 
 # This function checks if the a move results in the elimination of the Piece
 def move_is_eliminated(piece, dir, target_color):
-
     if dir == RIGHT:
         if isinstance(piece.top_right, Piece) and isinstance(piece.bottom_right, Piece):
             if piece.top_right.color == target_color and piece.bottom_right == target_color:
@@ -171,7 +164,7 @@ def check_valid_jump_move(piece, dir, target_color):
 
     if dir == RIGHT:
         if piece.right and isinstance(piece.right.square_at(RIGHT), Square):
-            if not move_is_eliminated(piece.left, RIGHT, target_color):
+            if not move_is_eliminated(piece.right, RIGHT, target_color):
                 return True
 
     if dir == TOP:

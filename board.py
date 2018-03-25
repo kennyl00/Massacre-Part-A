@@ -21,10 +21,13 @@ MAX_MOVE = 64
 MASSACRE = 'Massacre'
 MOVES = 'Moves'
 MAXINT = 10000000
+MAX_BLACK_REMOVABLE = 64
 
 class Goal:
     square1 = None
     square2 = None
+    square1_occupied_by_white = False
+    square2_occupied_by_white = False
     piece_to_eliminate = None
 
     def __init__(self, square1, square2, piece_to_eliminate):

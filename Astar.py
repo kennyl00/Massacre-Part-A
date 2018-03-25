@@ -22,8 +22,15 @@ def astar(start_square, goal_square, new_board):
 
 
 def get_available_neighbours(current_square, new_board, openset, closedset, goal_square, path):
-    # a list of neghbours to be added to openset
+
+    # Returning a List of Neighbour Squares
     neighbours_to_add = []
+
+
+
+
+
+    # Look at all
     for dir in range(LEFT, BOTTOM + 1):
         # find the neighbour of current square
         neighbour = find_square_neighbour(square, dir, new_board)
@@ -46,6 +53,7 @@ def get_available_neighbours(current_square, new_board, openset, closedset, goal
         if neighbour and check_move(neighbour) is YES:
             # update the cost_to_move
             neighbour.cost_to_move = current_square.cost_to_move + 1
+
             # if neighbour in the openset and neighbour has a bigger f
             if bigger_than_in_set(neighbour, openset):
                 continue

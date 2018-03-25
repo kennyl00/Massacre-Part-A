@@ -4,6 +4,8 @@
 
 from board import *
 
+
+
 # This function takes in a Board filled with Pieces and identifies
 # each Piece's neighbours
 def find_neighbour(new_board):
@@ -27,34 +29,6 @@ def find_neighbour(new_board):
                 other_square = occupied(piece, dir, new_board.squares)
                 # set the current piece's direction to that square
                 piece.set_neighbour(dir, other_square)
-
-# Remove a Colored neighbour
-def remove_neighbours(board, this_piece, color_to_remove):
-
-    # For every Piece on the board
-    for piece in board.pieces:
-        if piece.color is color_to_remove:
-            for dir in range(LEFT, BOTTOM + 1):
-                # if the removed piece has the same location as a neighbour of a piece
-                if piece.square_at(dir) and piece.square_at(dir).x == this_piece.x and \
-                        piece.square_at(dir).y == this_piece.y:
-                        # set the square of the same location on board as a neighbour
-                        for square in board.squares:
-                            if square and square.x == this_piece.x and \
-                                    square.y == this_piece.y:
-                                piece.set_neighbour(dir, square)
-
-def find_square_neighbour(square, dir, new_board):
-    # Check if there is an object at that direction
-    other_piece = occupied(piece, dir, new_board.pieces)
-    # See if the Direction is occupied by a Piece
-    if(other_piece):
-        return other_piece
-
-    # If not, see if the Direction is occupied by a Square
-    else:
-        other_square = occupied(piece, dir, new_board.squares)
-        return other_piece
 
 
 # This function takes in a Piece and goes through either the Board's

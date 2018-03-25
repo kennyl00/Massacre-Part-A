@@ -76,6 +76,7 @@ def get_nearest_piece(board, color):
     return min_priority_piece
 
 
+# check whether goal squares are already occupied by white piece on board
 def occuppied_by_white(new_board, goal):
     for piece in board.pieces:
         if goal.square1 and goal.square1.x == piece.x and goal.square1.y == piece.y:
@@ -83,7 +84,7 @@ def occuppied_by_white(new_board, goal):
         if goal.square2 and goal.square2.x == piece.x and goal.square2.y == piece.y:
             goal.square1_occupied_by_white == True
 
-
+# check whether a set of squres are reachable
 def is_goal_achievable(new_board, goal):
     # if both are not None
     if goal.square1 and goal.square2:

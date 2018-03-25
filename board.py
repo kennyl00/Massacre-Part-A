@@ -31,7 +31,7 @@ class Goal:
         self.square1 = square1
         self.square2 = square2
         self.piece_to_eliminate = piece_to_eliminate
-        
+
 
 class Board:
     # List of Squares and Pieces
@@ -66,6 +66,14 @@ class Square:
         self.x = x
         self.y = y
 
+    # This function assigns each Square and Piece to a priority relative to the individual Piece
+    def set_priority(self, new_board):
+        for square in new_board:
+            square.priority = abs(self.x - square.x) + abs(self.y - square.y)
+
+        for piece in new_board:
+            piece.priority = abs(self.x - piece.x) + abs(self.y - piece.y)
+
 
 class Piece:
     # Coordinates of each Piece
@@ -91,6 +99,8 @@ class Piece:
 
     # Can the Piece be removed
     removable = False
+
+    moveable = True
 
     # Initialises the Piece by its own coordinates and color
     def __init__(self, x, y, color):
@@ -145,11 +155,3 @@ class Piece:
 
         if dir == BOTTOM_RIGHT:
             self.bottom_right = neighbour
-
-    # This function assigns each Square and Piece to a priority relative to the individual Piece
-    def set_priority(self, new_board):
-        for square in new_board:
-            square.priority = abs(self.x - square.x) + abs(self.y - square.y)
-
-        for piece in new_board:
-            piece.priority = abs(self.x - piece.x) + abs(self.y - piece.y)

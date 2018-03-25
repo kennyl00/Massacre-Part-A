@@ -57,9 +57,9 @@ def count_legal_move(new_board, color):
     return count
 
 # This function returns a list of Goals
-def get_goal(board, target_color):
+def get_goal_list(board, target_color):
 
-    goal_squares = []
+    goal_list = []
 
     for piece in board.pieces:
         if piece.color == target_color:
@@ -106,12 +106,11 @@ def get_goal(board, target_color):
                     elif check_move(piece, BOTTOM, target_color) == YES and isinstance(piece.square_at(TOP), Piece):
                         if piece.square_at(TOP).color == WHITE:
                             goal_squares.append(Goal(piece.square_at(BOTTOM), piece.square_at(TOP), piece))
-                            
+
                         elif piece.square_at(TOP).color == CORNER:
                             goal_squares.append(Goal(piece.square_at(BOTTOM), None, piece))
 
-
-    return goal_squares
+    return goal_list
 
 # This function will return a Square in any Direction unless it is Blocked by
 # a Piece and can't be Jumped Over
@@ -123,8 +122,15 @@ def get_square(piece, dir, target_color):
         return piece.square_at(dir).square_at(dir)
 
     elif check_move(piece, dir, target_color) == NO:
-
         return  None
+
+def get_standing_square(piece, board):
+
+    for square in board.square:
+        if piece.x == square.x and piece.y == square.y:
+            return square
+
+    return None
 
 
 def check_move(piece, dir, target_color):

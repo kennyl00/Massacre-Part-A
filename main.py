@@ -3,6 +3,7 @@ from board import *
 from file import *
 from moves import *
 from goal import *
+from Astar import *
 import sys
 
 # This is the main file
@@ -21,18 +22,27 @@ def main():
     # Find the neighbours of every Pieces
     find_neighbour(board)
 
-    goal_list = []
 
-    # Output depending on the Messsage
-    if OUTPUT_STATE == MASSACRE:
-        goal_list = get_goal(board, BLACK)
+# Read the file and set up the Board with Squares and Pieces
+    OUTPUT_STATE = read_file(file, board)
 
-    elif OUTPUT_STATE == MOVES:
-        print(count_legal_move(board, WHITE))
-        print(count_legal_move(board, BLACK))
+    start_square = None
+    goal_square = None
+    start_piece = None
+    for piece in board.squares:
+        if piece.x == 2 and piece.y == 5:
+            start_square = piece
+        if piece.x ==  5 and piece.y == 7:
+            goal_square = piece
 
+    for piece in board.pieces:
+        if piece.x == 2 and piece.y == 5:
+            start_piece = piece
+    path = []
+    path = astar(start_piece, start_square, goal_square, board)
 
-
+    for i in path:
+        print(i.y, i.x)
 
 
 main()

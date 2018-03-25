@@ -28,7 +28,7 @@ def main():
     for piece in board.squares:
         if piece.x == 2 and piece.y == 5:
             start_square = piece
-        if piece.x ==  3 and piece.y == 4:
+        if piece.x ==  3 and piece.y == 3:
             goal_square = piece
 
     for piece in board.pieces:

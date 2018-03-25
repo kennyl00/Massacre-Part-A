@@ -20,6 +20,7 @@ JUMP = 'J'
 MAX_MOVE = 64
 MASSACRE = 'Massacre'
 MOVES = 'Moves'
+MAXINT = 10000000
 
 class Goal:
     square1 = None
@@ -36,9 +37,6 @@ class Goal:
             num_square = 2
         else:
             num_square = 1
-
-
-
 
 
 class Board:
@@ -66,6 +64,8 @@ class Square:
     priority = 0
 
     parent= None
+
+    f = cost_to_move + priority
 
     # Initialises the Square with it's own coordinates
     def __init__(self, x, y):

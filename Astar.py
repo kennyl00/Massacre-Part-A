@@ -10,7 +10,8 @@ def astar(start_piece, start_square, goal_square, new_board):
 
     while not len(openset) == 0:
         # pop a square from openset
-        current_square = openset.pop()
+
+        current_square = find_min_f(openset)
 
         print(current_square.y, current_square.x)
 
@@ -25,6 +26,7 @@ def astar(start_piece, start_square, goal_square, new_board):
             return path
 
         openset.extend(get_available_neighbours(start_piece, current_square, new_board, openset, closedset))
+
         closedset.append(current_square)
 
     return
@@ -69,14 +71,17 @@ def clear_priority(new_board):
     for piece in new_board.pieces:
         piece.priority = 0
 
-    for square in new_board.pieces:
+    for square in new_board.squares:
         square.priority = 0
 
 
 def clear_parent(new_board):
-
-    for square in new_board.pieces:
+    for square in new_board.squares:
         square.parent = None
+
+def clear_cost_to_move(new_board):
+    for square in new_board.square:
+        square.cost_to_move = 0
 
 
 def move(start_piece, current_square, new_board):
@@ -84,3 +89,14 @@ def move(start_piece, current_square, new_board):
     start_piece.y = current_square.y
 
     find_neighbour(new_board)
+
+def find_min_f(openset):
+    min = MAXINT
+    index = 0
+    for i in range(0, len(openset)):
+        buffer = openset[i].f
+        if buffer < min:
+            min = buffer
+            index = i
+
+    return openset.pop(index)

@@ -21,19 +21,23 @@ MAX_MOVE = 64
 MASSACRE = 'Massacre'
 MOVES = 'Moves'
 
+class Goal:
+    square1 = None
+    square2 = None
+    piece_to_eliminate = None
+    num_square = 0
 
-class Goals:
-    piece1 = None
-    piece2 = None
+    def __init__(self, square1, square2, piece_to_eliminate):
+        self.square1 = square1
+        self.square2 = square2
+        self.piece_to_eliminate = piece_to_eliminate
 
-    def __init__(self):
-        assert 1 == 1
+        if square1 and square2:
+            num_square = 2
+        else:
+            num_square = 1
 
-    def set_piece1(self, piece1):
-        self.piece1 = piece1
 
-    def set_piece2(self, piece2):
-        self.piece2 = piece2
 
 
 

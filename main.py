@@ -21,13 +21,17 @@ def main():
     # Find the neighbours of every Pieces
     find_neighbour(board)
 
+    goal_list = []
+
     # Output depending on the Messsage
     if OUTPUT_STATE == MASSACRE:
-        determinate_goals(board, BLACK)
+        goal_list = get_goal(board, BLACK)
 
     elif OUTPUT_STATE == MOVES:
         print(count_legal_move(board, WHITE))
         print(count_legal_move(board, BLACK))
+
+
 
 
 

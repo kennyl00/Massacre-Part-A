@@ -56,6 +56,63 @@ def count_legal_move(new_board, color):
 
     return count
 
+# This function returns a list of Goals
+def get_goal(board, target_color):
+
+    goal_squares = []
+
+    for piece in board.pieces:
+        if piece.color == target_color:
+            for dir in range(LEFT, TOP+1):
+                # Check Left and Right
+                if dir == LEFT:
+                    # If LEFT and RIGHT of the Target Piece are Squares
+                    if check_move(piece, LEFT, target_color) == YES and check_move(piece, RIGHT, target_color) == YES:
+                        goal_squares.append(Goal(piece.square_at(LEFT), piece.square_at(RIGHT), piece))
+                        break
+
+                    # If the LEFT of Target Piece is Square and the RIGHT is a Piece
+                    elif check_move(piece, LEFT, target_color) == YES and isinstance(piece.square_at(RIGHT), Piece):
+                        # and if the RIGHT Piece is not a Target
+                        if not piece.square_at(RIGHT).color == target_color:
+                            goal_squares.append(Goal(piece.square_at(LEFT), None, piece))
+                            break
+
+                    # If the RIGHT of the Target Piece is Square and the LEFT is a Piece
+                    elif check_move(piece, RIGHT, target_color) == YES and isinstance(piece.square_at(LEFT), Piece):
+                        if not piece.square_at(LEFT).color == target_color:
+                            goal_squares.append(Goal(piece.square_at(RIGHT), None, piece))
+                            break
+
+                if dir == TOP:
+                    if check_move(piece, TOP, target_color) == YES and check_move(piece, BOTTOM, target_color) == YES:
+                        goal_squares.append(Goal(piece.square_at(TOP), piece.square_at(BOTTOM), piece))
+
+
+                    elif check_move(piece, TOP, target_color) == YES and isinstance(piece.square_at(BOTTOM), Piece):
+                        if not piece.square_at(BOTTOM).color == target_color:
+                            goal_squares.append(Goal(piece.square_at(TOP), None, piece))
+
+                    elif check_move(piece, BOTTOM, target_color) == YES and isinstance(piece.square_at(TOP), Piece):
+                        if not piece.square_at(TOP).color == target_color:
+                            goal_squares.append(Goal(piece.square_at(BOTTOM), None, piece))
+
+
+    return goal_squares
+
+# This function will return a Square in any Direction unless it is Blocked by
+# a Piece and can't be Jumped Over
+def get_square(piece, dir, target_color):
+
+    if check_move(piece, dir, target_color) == YES:
+        return piece.square_at(dir)
+
+    elif check_move(piece, dir, target_color) == JUMP:
+        return piece.square_at(dir).square_at(dir) 
+
+    return None
+
+
 def check_move(piece, dir, target_color):
 
     # First check if the move is possible
@@ -101,21 +158,25 @@ def move_is_eliminated(piece, dir, target_color):
 # and not get eliminated
 def check_valid_jump_move(piece, dir, target_color):
 
-    if dir == LEFT and isinstance(piece.left.left, Square):
-        if not move_is_eliminated(piece.left, LEFT, target_color):
-            return True
+    if dir == LEFT:
+        if piece.left and isinstance(piece.left.square_at(LEFT), Square):
+            if not move_is_eliminated(piece.left, LEFT, target_color):
+                return True
 
-    if dir == RIGHT and isinstance(piece.right.right, Square):
-        if not move_is_eliminated(piece.left, RIGHT, target_color):
-            return True
+    if dir == RIGHT:
+        if piece.right and isinstance(piece.right.square_at(RIGHT), Square):
+            if not move_is_eliminated(piece.left, RIGHT, target_color):
+                return True
 
-    if dir == TOP and isinstance(piece.top.top, Square):
-        if not move_is_eliminated(piece.top, TOP, target_color):
-            return True
+    if dir == TOP:
+        if piece.top and isinstance(piece.top.square_at(TOP), Square):
+            if not move_is_eliminated(piece.top, TOP, target_color):
+                return True
 
-    if dir == BOTTOM and isinstance(piece.bottom.bottom, Square):
-        if not move_is_eliminated(piece.bottom, BOTTOM, target_color):
-            return True
+    if dir == BOTTOM:
+        if piece.bottom and isinstance(piece.bottom.square_at(BOTTOM), Square):
+            if not move_is_eliminated(piece.bottom, BOTTOM, target_color):
+                return True
 
     return False
 

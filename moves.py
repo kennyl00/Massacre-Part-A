@@ -79,7 +79,7 @@ def get_goal(board, target_color):
                             break
 
                         else:
-                            goal_squares.append(Goal(piece.square_at(LEFT), piece))
+                            goal_squares.append(Goal(piece.square_at(LEFT), None, piece))
                             break
 
                     # If the RIGHT of the Target Piece is Square and the LEFT is a Piece
@@ -101,7 +101,7 @@ def get_goal(board, target_color):
                             goal_squares.append(Goal(piece.square_at(TOP), piece.square_at(BOTTOM), piece))
 
                         else:
-                            goal_squares.append(Goal(piece.square_t(TOP), None, piece)
+                            goal_squares.append(Goal(piece.square_t(TOP), None, piece))
 
                     elif check_move(piece, BOTTOM, target_color) == YES and isinstance(piece.square_at(TOP), Piece):
                         if piece.square_at(TOP).color == WHITE:

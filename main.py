@@ -41,6 +41,9 @@ def main():
 
 
     for goal in goal_list:
-        print(goal.square1.y, goal.square1.x, "||||", goal.square2.y, goal.square2.x)
+        if goal.square1 and goal.square2:
+            print(goal.square1.y, goal.square1.x, "||||", goal.square2.y, goal.square2.x)
+        else:
+            print(goal.square1.y, goal.square1.x)
 
 main()

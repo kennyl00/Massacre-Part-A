@@ -18,6 +18,8 @@ YES = 'Y'
 NO = 'N'
 JUMP = 'J'
 MAX_MOVE = 64
+MASSACRE = 'Massacre'
+MOVES = 'Moves'
 
 
 class Goals:

@@ -1,4 +1,5 @@
 from board import *
+from neighbour import *
 
 # This function returns a List filled with Square positions that would lead to
 # the elimination of a Target Piece
@@ -154,22 +155,6 @@ def limited_dfs(new_board, depth, goal_squares, position, old_position, target_c
     else:
         return
 
-# Remove a Colored neighbour
-def remove_neighbours(board, this_piece, color_to_remove):
-
-    # For every Piece on the board
-    for piece in board.pieces:
-        if piece.color is color_to_remove:
-            for dir in range(LEFT, BOTTOM + 1):
-                # if the removed piece has the same location as a neighbour of a piece
-                if piece.square_at(dir) and piece.square_at(dir).x == this_piece.x and \
-                        piece.square_at(dir).y == this_piece.y:
-                        # set the square of the same location on board as a neighbour
-                        for square in board.squares:
-                            if square and square.x == this_piece.x and \
-                                    square.y == this_piece.y:
-                                piece.set_neighbour(dir, square)
-
 
 # This function returns the number of a Colored Piece on the Board
 def num_pieces(board, color):
@@ -178,18 +163,6 @@ def num_pieces(board, color):
         if piece.color is color:
             num += 1
     return num
-
-
-def set_neighbour(piece, dir, list):
-    if dir == LEFT and piece.left is None:
-        piece.left = occupied(piece, dir, list)
-    if dir == RIGHT and piece.right is None:
-        piece.right = occupied(piece, dir, list)
-    if dir == TOP and piece.top is None:
-        piece.top = occupied(piece, dir, list)
-    if dir == BOTTOM and piece.bottom is None:
-        piece.bottom = occupied(piece, dir, list)
-
 
 # if a black piece is removed
 def black_piece_reduced(piece, visited_list):

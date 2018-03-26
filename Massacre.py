@@ -1,6 +1,6 @@
 from board import *
-from goal import *
 from random import shuffle
+from neighbour import *
 
 def Massacre(new_board, target_color):
 
@@ -78,7 +78,7 @@ def get_nearest_piece(board, color):
 
 # check whether goal squares are already occupied by white piece on board
 def occuppied_by_white(new_board, goal):
-    for piece in board.pieces:
+    for piece in new_board.pieces:
         if goal.square1 and goal.square1.x == piece.x and goal.square1.y == piece.y:
             goal.square1_occupied_by_white == True
         if goal.square2 and goal.square2.x == piece.x and goal.square2.y == piece.y:
@@ -86,12 +86,13 @@ def occuppied_by_white(new_board, goal):
 
 # check whether a set of squres are reachable
 def is_goal_achievable(new_board, goal):
+
+    eliminated_pieces = []
     # if both are not None
     if goal.square1 and goal.square2:
         # check wheter a goal square is occupied by a white piece
         occuppied_by_white(new_board, goal)
 
-        eliminated_pieces = []
         # if both are not occupied by white piece, under this condition
         # one white piece will not be sufficient to remove black piece
         if not goal.square1_occupied_by_white and not goal.square2_occupied_by_white:
@@ -125,13 +126,13 @@ def is_goal_achievable(new_board, goal):
                     # if the piece1 is eliminated again
                     if eliminated_pieces_color(eliminated_pieces, WHITE):
                         #reset the whole board
-                        reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+                        reset_board(new_piece1, new_piece2, eliminated_pieces, new_board)
 
                         return False
                         # if piece1 is not eliminated
                     else:
                         #reset the whole board
-                        reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+                        reset_board(new_piece1, new_piece2, eliminated_pieces, new_board)
                         return True
 
             # if piece1 is not eliminated
@@ -143,35 +144,35 @@ def is_goal_achievable(new_board, goal):
                 # if the piece2 is eliminated
                 if eliminated_pieces_color(eliminated_pieces, WHITE):
                     #reset the whole board
-                    reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+                    reset_board(new_piece1, new_piece2, eliminated_pieces, new_board)
 
                     return False
                 # if the piece2 is not eliminated
                 else:
                     #reset the whole board
-                    reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+                    reset_board(new_piece1, new_piece2, eliminated_pieces, new_board)
                     return True
 
         # if square1 is already occupied by a whtie piece
         if goal.square1_occupied_by_white and not goal.square2_occupied_by_white:
             # consider only square2
-            return one_square_solution(goal_square2, new_board, eliminated_pieces)
+            return one_square_solution(goal.square2, new_board, eliminated_pieces)
 
         # if square2 is already occupied by a whtie piece
         if not goal.square1_occupied_by_white and goal.square2_occupied_by_white:
             # consider only square1
-            return one_square_solution(goal_square1, new_board, eliminated_pieces)
+            return one_square_solution(goal.square1, new_board, eliminated_pieces)
 
     # square2 is None
     else:
         # consider only square1
-        return one_square_solution(goal_square1, new_board, eliminated_pieces)
+        return one_square_solution(goal.square1, new_board, eliminated_pieces)
 
 
 # when only one square is need for consideration
 def one_square_solution(goal_square, new_board, eliminated_pieces):
     # create a new piece at goal.square
-    new_piece = Piece(goal.square.x, goal.square.y, WHITE)
+    new_piece = Piece(goal_square.x, goal_square.y, WHITE)
     # put piece on board
     new_board.pieces.append(new_piece)
     # get all pieces eliminated from board
@@ -179,13 +180,13 @@ def one_square_solution(goal_square, new_board, eliminated_pieces):
     # if the piece is eliminated
     if eliminated_pieces_color(eliminated_pieces, WHITE):
         #reset the whole board
-        reset_board(new_piece, None, eliminated_pieces, new_board):
+        reset_board(new_piece, None, eliminated_pieces, new_board)
 
         return False
 
     else:
         #reset the whole board
-        reset_board(new_piece, None, eliminated_pieces, new_board):
+        reset_board(new_piece, None, eliminated_pieces, new_board)
 
         return True
 
@@ -199,12 +200,14 @@ def reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
         new_board.pieces.remove(new_piece2)
     # put all black_pieces back in
     # at most 64 black_pieces could be removed
+    # remove balck pieces in eliminated_pieces
     for i in range(0, MAX_BLACK_REMOVABLE + 1):
         if eliminated_pieces_color(eliminated_pieces, BLACK):
             new_board.pieces.append(eliminated_pieces_color(eliminated_pieces, BLACK))
+            eliminated_pieces.remove(eliminated_pieces_color(eliminated_pieces, BLACK))
 
     # clear list
-    eliminated_pieces.clear()
+    del eliminated_pieces[:]
     # reconstruct neighbourhood
     find_neighbour(new_board)
 
@@ -221,24 +224,30 @@ def get_eliminated(new_board, target_color):
     # update neighbourhood
     find_neighbour(new_board)
 
-    for piece in board.pieces:
-        if piece.color = target_color
+    for piece in new_board.pieces:
+        if piece.color == target_color:
             # only check 2 directions
             for dir in range(LEFT, TOP + 1):
                 if isinstance(piece.square_at(dir), Piece) and \
-                    isinstance(piece.square_at(opposite_dir(dir), Piece)):
+                    isinstance(piece.square_at(opposite_dir(dir)), Piece):
                     # if it is surrounded colors are different from self
                     if not piece.square_at(dir).color == piece.color and \
-                        not piece.square_at(opposite_dir(dir)) == piece.color:
+                        not piece.square_at(opposite_dir(dir)).color == piece.color:
                         # add to list
                         eliminated_pieces.append(piece)
+
+    # remove eliminated_pieces from board
+    for piece in eliminated_pieces:
+        if piece in new_board.pieces:
+            new_board.pieces.remove(piece)
+
     return eliminated_pieces
 
 # if a piece in list has the same color as required
 # return the piece
 def eliminated_pieces_color(eliminated_pieces, target_color):
     for piece in eliminated_pieces:
-        if piece.color == target_color
+        if piece.color == target_color:
             return piece
     return None
 
@@ -246,7 +255,7 @@ def eliminated_pieces_color(eliminated_pieces, target_color):
 def opposite_dir(dir):
     if dir == LEFT:
         return RIGHT
-    if dir ==RIGHT:
+    if dir == RIGHT:
         return LEFT
     if dir == TOP:
         return BOTTOM

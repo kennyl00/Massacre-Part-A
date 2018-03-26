@@ -13,8 +13,6 @@ def astar(start_piece, start_square, goal_square, new_board):
 
         current_square = find_min_f(openset)
 
-        print(current_square.y, current_square.x)
-
         move(start_piece, current_square, new_board)
 
         if start_piece.x == goal_square.x and start_piece.y == goal_square.y:
@@ -80,7 +78,7 @@ def clear_parent(new_board):
         square.parent = None
 
 def clear_cost_to_move(new_board):
-    for square in new_board.square:
+    for square in new_board.squares:
         square.cost_to_move = 0
 
 

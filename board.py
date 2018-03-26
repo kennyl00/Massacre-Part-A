@@ -29,6 +29,7 @@ class Goal:
     square1_occupied_by_white = False
     square2_occupied_by_white = False
     piece_to_eliminate = None
+    fist_to_fit = None
 
     def __init__(self, square1, square2, piece_to_eliminate):
         self.square1 = square1
@@ -71,10 +72,10 @@ class Square:
 
     # This function assigns each Square and Piece to a priority relative to the individual Piece
     def set_priority(self, new_board):
-        for square in new_board:
+        for square in new_board.squares:
             square.priority = abs(self.x - square.x) + abs(self.y - square.y)
 
-        for piece in new_board:
+        for piece in new_board.pieces:
             piece.priority = abs(self.x - piece.x) + abs(self.y - piece.y)
 
 

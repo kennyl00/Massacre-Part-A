@@ -4,6 +4,7 @@ from file import *
 from moves import *
 from Astar import *
 from Massacre import *
+
 import sys
 
 # This is the main file
@@ -14,10 +15,11 @@ def main():
     # Create a new Board
     board = Board()
 
-    file = sys.argv[1]
+    # Reads the file from input and fills up the board
+    OUTPUT_STATE = read_file_from_stdin(board)
 
-    # Read the file and set up the Board with Squares and Pieces
-    OUTPUT_STATE = read_file(file, board)
+
+
 
     # Find the neighbours of every Pieces
     find_neighbour(board)

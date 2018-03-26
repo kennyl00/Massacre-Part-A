@@ -116,9 +116,9 @@ def is_goal_achievable(new_board, goal):
                     reset_board(new_piece1, new_piece2, eliminated_pieces, new_board)
 
                     return False
-                    # if piece2 is not eliminated
+                # if piece2 is not eliminated
                 else:
-                    # put in piece1 again in board
+                    # put piece1 again in board
                     new_board.pieces.append(new_piece1)
                     # get all pieces eliminated from board
                     eliminated_black_and_white(new_board, eliminated_pieces)
@@ -146,7 +146,7 @@ def is_goal_achievable(new_board, goal):
                     reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
 
                     return False
-                    # if the piece2 is not eliminated
+                # if the piece2 is not eliminated
                 else:
                     #reset the whole board
                     reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
@@ -154,65 +154,40 @@ def is_goal_achievable(new_board, goal):
 
         # if square1 is already occupied by a whtie piece
         if goal.square1_occupied_by_white and not goal.square2_occupied_by_white:
-            # create a new piece at goal.square2
-            new_piece2 = Piece(goal.square2.x, goal.square2.y, WHITE)
-            # put piece2 on board
-            new_board.pieces.append(new_piece2)
-            # get all pieces eliminated from board
-            eliminated_black_and_white(new_board, eliminated_pieces)
-            # if the piece2 is eliminated
-            if eliminated_pieces_color(eliminated_pieces, WHITE):
-                #reset the whole board
-                reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
-
-                return False
-
-            else:
-                #reset the whole board
-                reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
-
-                return True
+            # consider only square2
+            return one_square_solution(goal_square2, new_board, eliminated_pieces)
 
         # if square2 is already occupied by a whtie piece
-        if not goal.square1_occupied_by_white and goal.square1_occupied_by_white:
-            # create a new piece at goal.square1
-            new_piece1 = Piece(goal.square1.x, goal.square1.y, WHITE)
-            # put piece1 on board
-            new_board.pieces.append(new_piece1)
-            # get all pieces eliminated from board
-            eliminated_black_and_white(new_board, eliminated_pieces)
-            # if the piece1 is eliminated
-            if eliminated_pieces_color(eliminated_pieces, WHITE):
-                #reset the whole board
-                reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+        if not goal.square1_occupied_by_white and goal.square2_occupied_by_white:
+            # consider only square1
+            return one_square_solution(goal_square1, new_board, eliminated_pieces)
 
-                return False
-
-            else:
-                #reset the whole board
-                reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
-
-                return True
     # square2 is None
     else:
-        # create a new piece at goal.square1
-        new_piece1 = Piece(goal.square1.x, goal.square1.y, WHITE)
-        # put piece1 on board
-        new_board.pieces.append(new_piece1)
-        # get all pieces eliminated from board
-        eliminated_black_and_white(new_board, eliminated_pieces)
-        # if the piece1 is eliminated
-        if eliminated_pieces_color(eliminated_pieces, WHITE):
-            #reset the whole board
-            reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+        # consider only square1
+        return one_square_solution(goal_square1, new_board, eliminated_pieces)
 
-            return False
 
-        else:
-            #reset the whole board
-            reset_board(new_piece1, new_piece2, eliminated_pieces, new_board):
+# when only one square is need for consideration
+def one_square_solution(goal_square, new_board, eliminated_pieces):
+    # create a new piece at goal.square
+    new_piece = Piece(goal.square.x, goal.square.y, WHITE)
+    # put piece on board
+    new_board.pieces.append(new_piece)
+    # get all pieces eliminated from board
+    eliminated_black_and_white(new_board, eliminated_pieces)
+    # if the piece is eliminated
+    if eliminated_pieces_color(eliminated_pieces, WHITE):
+        #reset the whole board
+        reset_board(new_piece, None, eliminated_pieces, new_board):
 
-            return True
+        return False
+
+    else:
+        #reset the whole board
+        reset_board(new_piece, None, eliminated_pieces, new_board):
+
+        return True
 
 
 # reset all pieces on board

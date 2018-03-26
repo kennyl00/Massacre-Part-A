@@ -124,6 +124,7 @@ def get_square(piece, dir, target_color):
     elif check_move(piece, dir, target_color) == NO:
         return  None
 
+
 def get_standing_square(piece, board):
 
     for square in board.squares:
@@ -155,20 +156,37 @@ def move_is_eliminated(piece, dir, target_color):
             if piece.top_right.color == target_color and piece.bottom_right == target_color:
                 return True
 
+            elif piece.right.square_at(LEFT) == target_color or piece.right.square_at(LEFT) == CORNER:
+                if piece.right.square_at(RIGHT) == target_color or piece.right.square_at(RIGHT) == CORNER:
+                    return True
+
     if dir == LEFT:
         if isinstance(piece.top_left, Piece) and isinstance(piece.bottom_left, Piece):
             if piece.top_left.color == target_color and piece.bottom_left.color == target_color:
                 return True
+
+            elif piece.left.square_at(LEFT) == target_color or piece.left.square_at(LEFT) == CORNER:
+                if piece.left.square_at(RIGHT) == target_color or piece.left.square_at(RIGHT) == CORNER:
+                    return True
 
     if dir == TOP:
         if isinstance(piece.top_left, Piece) and isinstance(piece.top_right, Piece):
             if piece.top_left.color == target_color and piece.top_right.color == target_color:
                 return True
 
+        elif isinstance(piece.top, Piece) and isinstance(piece.bottom, Piece):
+            if piece.top.square_at(TOP) == target_color or piece.top.square_at(TOP) == CORNER:
+                if piece.top.square_at(BOTTOM) == target_color or piece.top.square_at(BOTTOM) == CORNER:
+                    return True
+
     if dir == BOTTOM:
         if isinstance(piece.bottom_left, Piece) and isinstance(piece.bottom_right, Piece):
             if piece.bottom_left.color == target_color and piece.bottom_right.color == target_color:
                 return True
+
+            elif piece.bottom.square_at(TOP) == target_color or piece.bottom.square_at(TOP) == CORNER:
+                if piece.bottom.square_at(BOTTOM) == target_color or piece.bottom.square_at(BOTTOM) == CORNER:
+                    return True
 
     return False
 

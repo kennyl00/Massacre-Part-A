@@ -23,53 +23,69 @@ def Massacre(new_board, target_color, goal_list):
             goal_square1 = goal.square1
             goal_square2 = goal.square2
 
-            # Check Which Goal Squares to go first
-            if goal.first_to_fit == 1:
-                goal_square1.set_priority(new_board)
-            elif goal.first_to_fit == 2:
-                goal_square2.set_priority(new_board)
-
-
-            # Get Closest White Piece and Square
-            start_piece = get_nearest_piece(new_board, WHITE)
-            print('start_piece', start_piece.y, start_piece.x)
-            start_square = get_standing_square(start_piece, new_board)
-
             path = []
 
             if goal.first_to_fit == 1:
-                path = astar(start_piece, start_square, goal_square1, new_board)
+                goal_square1.set_priority(new_board)
+                start_piece1 = get_nearest_piece(new_board, WHITE)
+                print('start_piece1', start_piece1.y, start_piece1.x)
+                start_square1 = get_standing_square(start_piece1, new_board)
+                path = astar(start_piece1, start_square1, goal_square1, new_board)
                 print_path(path)
-                start_piece.moveable = False
-                path = astar(start_piece, start_square, goal_square2, new_board)
+                start_piece1.moveable = False
+                refresh(new_board)
+
+
+                goal_square2.set_priority(new_board)
+                start_piece2 = get_nearest_piece(new_board, WHITE)
+                start_square2 = get_standing_square(start_piece2, new_board)
+                print('start_piece2', start_piece2.y, start_piece2.x)
+                path = astar(start_piece2, start_square2, goal_square2, new_board)
                 print_path(path)
-                start_piece.moveable = False
+                start_piece2.moveable = False
+                refresh(new_board)
+
                 eliminate(new_board, goal)
 
 
-
             elif goal.first_to_fit == 2:
-                path = astar(start_piece, start_square, goal_square2, new_board)
+
+                goal_square2.set_priority(new_board)
+                start_piece2 = get_nearest_piece(new_board, WHITE)
+                start_square2 = get_standing_square(start_piece2, new_board)
+                print('start_piece2', start_piece2.y, start_piece2.x)
+                path = astar(start_piece2, start_square2, goal_square2, new_board)
                 print_path(path)
-                path = astar(start_piece, start_square, goal_square1, new_board)
+                start_piece2.moveable = False
+                refresh(new_board)
+
+                goal_square1.set_priority(new_board)
+                start_piece1 = get_nearest_piece(new_board, WHITE)
+                print('start_piece1', start_piece1.y, start_piece1.x)
+                start_square1 = get_standing_square(start_piece1, new_board)
+                path = astar(start_piece1, start_square1, goal_square1, new_board)
                 print_path(path)
-                start_piece.moveable = False
+                start_piece1.moveable = False
+                refresh(new_board)
+
                 eliminate(new_board, goal)
 
 
         else:
             goal_square1 = goal.square1
             goal_square1.set_priority(new_board)
-            start_piece = get_nearest_piece(new_board, WHITE)
-            start_square = get_standing_square(start_piece, new_board)
+            start_piece1 = get_nearest_piece(new_board, WHITE)
+            start_square1 = get_standing_square(start_piece1, new_board)
 
             path = []
-            path = astar(start_piece, start_square, goal_square1, new_board)
+            path = astar(start_piece1, start_square1, goal_square1, new_board)
             print_path(path)
-            start_piece.moveable = False
+            start_piece1.moveable = False
+            refresh(new_board)
+
             eliminate(new_board, goal)
 
-        refresh(new_board)
+
 
 
 def print_path(path):

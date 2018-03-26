@@ -29,7 +29,16 @@ def main():
     goal_list = get_goal_list(board, BLACK)
 
 
-    Massacre(board, BLACK, goal_list)
+    piece1 = None
+    for piece in board.pieces:
+        if piece.x == 7 and piece.y == 3:
+            piece1 = piece
+
+
+    print(get_square(piece1, TOP, BLACK).y, get_square(piece1, TOP, BLACK).x)
+
+
+    # Massacre(board, BLACK, goal_list)
 
 
 

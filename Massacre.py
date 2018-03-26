@@ -153,7 +153,7 @@ def is_goal_achievable(new_board, goal):
                     return True
 
         # if square1 is already occupied by a whtie piece
-        if goal.square1_occupied_by_white and not goal.square1_occupied_by_white:
+        if goal.square1_occupied_by_white and not goal.square2_occupied_by_white:
             # create a new piece at goal.square2
             new_piece2 = Piece(goal.square2.x, goal.square2.y, WHITE)
             # put piece2 on board

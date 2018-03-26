@@ -39,10 +39,10 @@ def Massacre(new_board, target_color, goal_list):
 
             if goal.first_to_fit == 1:
                 path = astar(start_piece, start_square, goal_square1, new_board)
-                print(path)
+                print_path(path)
                 start_piece.moveable = False
                 path = astar(start_piece, start_square, goal_square2, new_board)
-                print(path)
+                print_path(path)
                 start_piece.moveable = False
                 eliminate(new_board, goal)
 
@@ -50,9 +50,9 @@ def Massacre(new_board, target_color, goal_list):
 
             elif goal.first_to_fit == 2:
                 path = astar(start_piece, start_square, goal_square2, new_board)
-                print(path)
+                print_path(path)
                 path = astar(start_piece, start_square, goal_square1, new_board)
-                print(path)
+                print_path(path)
                 start_piece.moveable = False
                 eliminate(new_board, goal)
 
@@ -65,11 +65,17 @@ def Massacre(new_board, target_color, goal_list):
 
             path = []
             path = astar(start_piece, start_square, goal_square1, new_board)
-            print(path)
+            print_path(path)
             start_piece.moveable = False
             eliminate(new_board, goal)
 
         refresh(new_board)
+
+
+def print_path(path):
+    print('-------')
+    for square in path:
+        print(square.y, square.x)
 
 
 def eliminate(new_board, goal):
@@ -80,11 +86,11 @@ def eliminate(new_board, goal):
 
         if target_piece.square_at(dir) and target_piece.opposite_of(dir):
             if isinstance(target_piece.square_at(dir), Piece) and \
-                target_piece.square_at(dir).color == CORNER:
+                not target_piece.square_at(dir).color == CORNER:
                 target_piece.square_at(dir).moveable = True
 
             if isinstance(target_piece.opposite_of(dir), Piece) and \
-                target_piece.opposite_of(dir).color == CORNER:
+                not target_piece.opposite_of(dir).color == CORNER:
                 target_piece.opposite_of(dir).moveable = True
 
 
@@ -115,7 +121,7 @@ def get_nearest_piece(board, color):
     min_priority_piece = None
 
     for piece in board.pieces:
-        if piece.color == color:
+        if piece.color == color and piece.moveable == True:
             if piece.priority < min_priority:
                 min_priority_piece = piece
                 min_priority = piece.priority

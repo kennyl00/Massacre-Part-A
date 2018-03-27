@@ -4,13 +4,19 @@ from neighbour import *
 from moves import *
 from Astar import *
 
-def Massacre(new_board, target_color, goal_list):
-
-
+def Massacre(new_board, target_color):
 
     # While the goal list is not empty
 
     while not isEliminated(new_board, BLACK):
+
+        # Find the neighbours of every Pieces
+        find_neighbour(new_board)
+
+        goal_list = []
+
+        goal_list = get_goal_list(new_board, BLACK)
+
         goal = goal_list.pop(0)
 
         while not is_goal_achievable(new_board, goal):

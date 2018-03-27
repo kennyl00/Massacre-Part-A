@@ -58,12 +58,23 @@ class Square:
     x = None
     y = None
     cost_to_move = 0
+
+    left = None
+    right = None
+    top = None
+    bottom = None
+    color = None
+    top_left = None
+    top_right = None
+    bottom_left = None
+    bottom_right = None
+
     # the priority of each square to be placed on by a piece
     priority = 0
 
-    parent= None
+    parent = None
 
-    f = cost_to_move + priority
+    f = 0
 
     # Initialises the Square with it's own coordinates
     def __init__(self, x, y):
@@ -78,6 +89,37 @@ class Square:
         for piece in new_board.pieces:
             piece.priority = abs(self.x - piece.x) + abs(self.y - piece.y)
 
+    def set_neighbour(self, dir, neighbour):
+        if dir == LEFT:
+            self.left = neighbour
+        if dir == RIGHT:
+            self.right = neighbour
+        if dir == TOP:
+            self.top = neighbour
+        if dir == BOTTOM:
+            self.bottom = neighbour
+
+        if dir == TOP_LEFT:
+            self.top_left = neighbour
+
+        if dir == TOP_RIGHT:
+            self.top_right = neighbour
+
+        if dir == BOTTOM_LEFT:
+            self.bottom_left = neighbour
+
+        if dir == BOTTOM_RIGHT:
+            self.bottom_right = neighbour
+
+    def square_at(self, dir):
+        if dir == LEFT:
+            return self.left
+        if dir == RIGHT:
+            return self.right
+        if dir == TOP:
+            return self.top
+        if dir == BOTTOM:
+            return self.bottom
 
 class Piece:
     # Coordinates of each Piece
@@ -94,7 +136,6 @@ class Piece:
     top_right = None
     bottom_left = None
     bottom_right = None
-    removable = False
     priority = 0
     cost_to_move = 0
 
@@ -159,3 +200,10 @@ class Piece:
 
         if dir == BOTTOM_RIGHT:
             self.bottom_right = neighbour
+
+    def set_priority(self, new_board):
+        for square in new_board.squares:
+            square.priority = abs(self.x - square.x) + abs(self.y - square.y)
+
+        for piece in new_board.pieces:
+            piece.priority = abs(self.x - piece.x) + abs(self.y - piece.y)

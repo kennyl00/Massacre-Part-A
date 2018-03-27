@@ -18,17 +18,8 @@ def main():
     # Reads the file from input and fills up the board
     OUTPUT_STATE = read_file_from_stdin(board)
 
-
-
-
-    # Find the neighbours of every Pieces
-    find_neighbour(board)
-
-    goal_list = []
-
-    goal_list = get_goal_list(board, BLACK)
-
-
+    Massacre(board, BLACK)
+'''
     piece1 = None
     for piece in board.pieces:
         if piece.x == 7 and piece.y == 3:
@@ -37,8 +28,7 @@ def main():
 
     print(get_square(piece1, TOP, BLACK).y, get_square(piece1, TOP, BLACK).x)
 
-
-    # Massacre(board, BLACK, goal_list)
+'''
 
 
 

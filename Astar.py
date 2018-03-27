@@ -35,12 +35,11 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
     neighbours_to_add = []
 
     for dir in range(LEFT, BOTTOM + 1):
-
         neighbour = get_square(start_piece, dir, BLACK)
         # if current_square can move to a neighbour
         if neighbour:
-
             neighbour.cost_to_move = current_square.cost_to_move + 1
+            neighbour.f = neighbour.cost_to_move + neighbour.priority
             # if neighbour in the openset and neighbour has a bigger f
             if bigger_than_in_set(neighbour, openset):
                 continue
@@ -49,6 +48,7 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
                 continue
             else:
                 # set parent and add to openset
+
                 neighbour.parent = current_square
                 neighbours_to_add.append(neighbour)
 

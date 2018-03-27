@@ -6,7 +6,6 @@ from Astar import *
 
 def Massacre(new_board, target_color):
 
-    # While the goal list is not empty
 
     while not isEliminated(new_board, BLACK):
 
@@ -23,7 +22,7 @@ def Massacre(new_board, target_color):
             goal = goal_list.pop(0)
             continue
 
-        if isinstance(goal.square1, Square)and isinstance(goal.square2, Square):
+        if isinstance(goal.square1, Square) and isinstance(goal.square2, Square):
             goal_square1 = goal.square1
             goal_square2 = goal.square2
 
@@ -49,9 +48,15 @@ def piece_to_square(new_board, goal_square):
     start_piece = get_nearest_piece(new_board, WHITE)
     start_square = get_standing_square(start_piece, new_board)
     path = astar(start_piece, start_square, goal_square, new_board)
-    print_path(path)
-    start_piece.moveable = False
-    refresh(new_board)
+
+    if path:
+        print_path(path)
+        start_piece.moveable = False
+        refresh(new_board)
+        return True
+
+    else:
+        return False
 
 
 
@@ -61,18 +66,24 @@ def print_path(path):
     square1 = None
     square2 = None
 
-    for square in reversed(path):
+    if path:
+        path.reverse()
+        for square in path:
 
-        if square1:
-            square2 = square
+            if square1:
+                square2 = square
 
-        if square1 and square2:
-            print('({},{}) -> ({},{})'.format(square1.y, square1.x, square2.y, square2.x))
-            square1 = None
-            square2 = None
+            if square1 and square2:
+                print('({},{}) -> ({},{})'.format(square1.y, square1.x, square2.y, square2.x))
+                square1 = None
+                square2 = None
 
-        square1 = square
+            square1 = square
 
+        return True
+
+    else:
+        return False
 
 
 

@@ -34,7 +34,6 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
     # a list of neghbours to be added to openset
     neighbours_to_add = []
 
-    print('piece', start_piece.y, start_piece.x)
     for dir in range(LEFT, BOTTOM + 1):
         neighbour = get_square(start_piece, dir, BLACK)
         # if current_square can move to a neighbour

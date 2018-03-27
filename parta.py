@@ -18,6 +18,8 @@ def main():
     # Reads the file from input and fills up the board
     OUTPUT_STATE = read_file_from_stdin(board)
 
+    find_neighbour(board)
+
     Massacre(board, BLACK)
 '''
     piece1 = None

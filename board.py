@@ -26,8 +26,8 @@ MAX_BLACK_REMOVABLE = 64
 class Goal:
     square1 = None
     square2 = None
-    square1_occupied_by_white = False
-    square2_occupied_by_white = False
+    square1_occupied = None
+    square2_occupied = None
     piece_to_eliminate = None
     fist_to_fit = None
 

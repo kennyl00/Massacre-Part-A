@@ -25,7 +25,7 @@ def Massacre(new_board, target_color):
             continue
 
 
-        if goal.square1 and goal.square2:
+        if isinstance(goal.square1, Square)and isinstance(goal.square2, Square):
             goal_square1 = goal.square1
             goal_square2 = goal.square2
 
@@ -33,8 +33,9 @@ def Massacre(new_board, target_color):
 
             if goal.first_to_fit == 1:
                 goal_square1.set_priority(new_board)
+
                 start_piece1 = get_nearest_piece(new_board, WHITE)
-                print('start_piece1', start_piece1.y, start_piece1.x)
+
                 start_square1 = get_standing_square(start_piece1, new_board)
                 path = astar(start_piece1, start_square1, goal_square1, new_board)
                 print_path(path)
@@ -43,9 +44,10 @@ def Massacre(new_board, target_color):
 
 
                 goal_square2.set_priority(new_board)
+
                 start_piece2 = get_nearest_piece(new_board, WHITE)
                 start_square2 = get_standing_square(start_piece2, new_board)
-                print('start_piece2', start_piece2.y, start_piece2.x)
+
                 path = astar(start_piece2, start_square2, goal_square2, new_board)
                 print_path(path)
                 start_piece2.moveable = False
@@ -54,20 +56,23 @@ def Massacre(new_board, target_color):
                 eliminate(new_board, goal)
 
 
+
             elif goal.first_to_fit == 2:
 
                 goal_square2.set_priority(new_board)
+
                 start_piece2 = get_nearest_piece(new_board, WHITE)
                 start_square2 = get_standing_square(start_piece2, new_board)
-                print('start_piece2', start_piece2.y, start_piece2.x)
+
                 path = astar(start_piece2, start_square2, goal_square2, new_board)
                 print_path(path)
                 start_piece2.moveable = False
                 refresh(new_board)
 
                 goal_square1.set_priority(new_board)
+
                 start_piece1 = get_nearest_piece(new_board, WHITE)
-                print('start_piece1', start_piece1.y, start_piece1.x)
+
                 start_square1 = get_standing_square(start_piece1, new_board)
                 path = astar(start_piece1, start_square1, goal_square1, new_board)
                 print_path(path)
@@ -80,6 +85,7 @@ def Massacre(new_board, target_color):
         else:
             goal_square1 = goal.square1
             goal_square1.set_priority(new_board)
+
             start_piece1 = get_nearest_piece(new_board, WHITE)
             start_square1 = get_standing_square(start_piece1, new_board)
 
@@ -152,12 +158,13 @@ def get_nearest_piece(board, color):
 
 
 # check whether goal squares are already occupied by white piece on board
-def occuppied_by_white(new_board, goal):
+def occuppied_by_color(new_board, goal, color):
     for piece in new_board.pieces:
-        if goal.square1 and goal.square1.x == piece.x and goal.square1.y == piece.y:
-            goal.square1_occupied_by_white == True
-        if goal.square2 and goal.square2.x == piece.x and goal.square2.y == piece.y:
-            goal.square1_occupied_by_white == True
+        if piece.color == color:
+            if goal.square1 and goal.square1.x == piece.x and goal.square1.y == piece.y:
+                goal.square1_occupied = piece
+            if goal.square2 and goal.square2.x == piece.x and goal.square2.y == piece.y:
+                goal.square2_occupied = piece
 
 # check whether a set of squares are reachable
 def is_goal_achievable(new_board, goal):
@@ -166,11 +173,11 @@ def is_goal_achievable(new_board, goal):
     # if both are not None
     if goal.square1 and goal.square2:
         # check wheter a goal square is occupied by a white piece
-        occuppied_by_white(new_board, goal)
+        occuppied_by_color(new_board, goal, WHITE)
 
         # if both are not occupied by white piece, under this condition
         # one white piece will not be sufficient to remove black piece
-        if not goal.square1_occupied_by_white and not goal.square2_occupied_by_white:
+        if not goal.square1_occupied and not goal.square2_occupied:
             # create two new pieces at goal square positions
             new_piece1 = Piece(goal.square1.x, goal.square1.y, WHITE)
             new_piece2 = Piece(goal.square2.x, goal.square2.y, WHITE)
@@ -231,12 +238,16 @@ def is_goal_achievable(new_board, goal):
                     return True
 
         # if square1 is already occupied by a whtie piece
-        if goal.square1_occupied_by_white and not goal.square2_occupied_by_white:
+        if goal.square1_occupied and not goal.square2_occupied:
+            print('2')
+            goal.square1_occupied.moveable = False
             # consider only square2
             return one_square_solution(goal.square2, new_board, eliminated_pieces, goal, 2)
 
         # if square2 is already occupied by a whtie piece
-        if not goal.square1_occupied_by_white and goal.square2_occupied_by_white:
+        if not goal.square1_occupied and goal.square2_occupied:
+            print('1')
+            goal.square2_occupied.moveable = False
             # consider only square1
             return one_square_solution(goal.square1, new_board, eliminated_pieces, goal, 1)
 

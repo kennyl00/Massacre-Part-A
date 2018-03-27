@@ -64,51 +64,27 @@ def get_goal_list(board, target_color):
     for piece in board.pieces:
         if piece.color == target_color:
             for dir in range(LEFT, TOP+1):
-                # Check Left and Right
-                if dir == LEFT:
-                    # If LEFT and RIGHT of the Target Piece are Squares
-                    if check_move(piece, LEFT, target_color) == YES and check_move(piece, RIGHT, target_color) == YES:
-                        goal_squares.append(Goal(piece.square_at(LEFT), piece.square_at(RIGHT), piece))
+
+                if isinstance(piece.square_at(dir), Piece) and isinstance(piece.opposite_of(dir), Square):
+                    if piece.square_at(dir).color == WHITE:
+                        goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
+
+                    elif piece.square_at(dir).color == CORNER:
+                        goal_squares.append(Goal(piece.opposite_of(dir), None, piece))
+
+                elif isinstance(piece.square_at(dir), Square) and isinstance(piece.opposite_of(dir), Piece):
+                    if piece.opposite_of(dir).color == WHITE:
+                        goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
+
+                    elif piece.opposite_of(dir).color == CORNER:
+                        goal_squares.append(Goal(piece.square_at(dir), None, piece))
 
 
-                    # If the LEFT of Target Piece is Square and the RIGHT is a Piece
-                    elif check_move(piece, LEFT, target_color) == YES and isinstance(piece.square_at(RIGHT), Piece):
-                        # and if the RIGHT Piece is not a Target
-                        if piece.square_at(RIGHT).color == WHITE:
-                            goal_squares.append(Goal(piece.square_at(LEFT), piece.square_at(RIGHT), piece))
+                elif isinstance(piece.square_at(dir), Square) and isinstance(piece.opposite_of(dir), Square):
+                    goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
+                    break
 
 
-                        elif piece.square_at(RIGHT).color == CORNER:
-                            goal_squares.append(Goal(piece.square_at(LEFT), None, piece))
-
-
-                    # If the RIGHT of the Target Piece is Square and the LEFT is a Piece
-                    elif check_move(piece, RIGHT, target_color) == YES and isinstance(piece.square_at(LEFT), Piece):
-                        if piece.square_at(LEFT).color == WHITE:
-                            goal_squares.append(Goal(piece.square_at(RIGHT), piece.square_at(LEFT), piece))
-
-                        elif piece.square_at(LEFT).color == CORNER:
-                            goal_squares.append(Goal(piece.square_at(RIGHT), None, piece))
-
-
-                if dir == TOP:
-                    if check_move(piece, TOP, target_color) == YES and check_move(piece, BOTTOM, target_color) == YES:
-                        goal_squares.append(Goal(piece.square_at(TOP), piece.square_at(BOTTOM), piece))
-
-
-                    elif check_move(piece, TOP, target_color) == YES and isinstance(piece.square_at(BOTTOM), Piece):
-                        if piece.square_at(BOTTOM).color == WHITE:
-                            goal_squares.append(Goal(piece.square_at(TOP), piece.square_at(BOTTOM), piece))
-
-                        elif piece.square_at(BOTTOM).color == CORNER:
-                            goal_squares.append(Goal(piece.square_at(TOP), None, piece))
-
-                    elif check_move(piece, BOTTOM, target_color) == YES and isinstance(piece.square_at(TOP), Piece):
-                        if piece.square_at(TOP).color == WHITE:
-                            goal_squares.append(Goal(piece.square_at(BOTTOM), piece.square_at(TOP), piece))
-
-                        elif piece.square_at(TOP).color == CORNER:
-                            goal_squares.append(Goal(piece.square_at(BOTTOM), None, piece))
 
     return goal_squares
 
@@ -159,7 +135,7 @@ def move_is_eliminated(piece, dir, target_color):
                 piece.bottom_right.color == target_color or piece.bottom_right.color == CORNER:
 
                 if isinstance(piece.top_right.top, Piece) or isinstance(piece.bottom_right.bottom, Piece):
-                    if piece.top_right.top.color == WHITE or piece.top_right.color == CORNER:
+                    if piece.top_right.top.color == WHITE or piece.top_right.top.color == CORNER:
                         return False
 
 
@@ -170,6 +146,10 @@ def move_is_eliminated(piece, dir, target_color):
                 else:
                     return True
 
+        if isinstance(piece.right.right, Piece):
+            if piece.right.right.color == BLACK or piece.right.right.color == CORNER:
+                if piece.color == BLACK or piece.color == CORNER:
+                    return True
 
     if dir == LEFT:
         if isinstance(piece.top_left, Piece) and isinstance(piece.bottom_left, Piece):
@@ -186,6 +166,10 @@ def move_is_eliminated(piece, dir, target_color):
                 else:
                     return True
 
+        if isinstance(piece.left.left, Piece):
+            if piece.left.left.color == BLACK or piece.left.left.color == CORNER:
+                if piece.color == BLACK or piece.color == CORNER:
+                    return True
 
 
     if dir == TOP:
@@ -195,12 +179,20 @@ def move_is_eliminated(piece, dir, target_color):
 
                 if isinstance(piece.top_left.left, Piece) or isinstance(piece.top_right.right, Piece):
                     if piece.top_left.left.color == WHITE or piece.top_left.left.color == CORNER:
+
                         return False
 
                     elif piece.top_right.right.color == WHITE or piece.top_right.right.color == CORNER:
                         return False
                 else:
                     return True
+
+        if isinstance(piece.top.top, Piece):
+            if piece.top.top.color == BLACK or piece.top.top.color == CORNER:
+                if piece.color == BLACK or piece.color == CORNER:
+                    return True
+
+
 
     if dir == BOTTOM:
         if isinstance(piece.bottom_left, Piece) and isinstance(piece.bottom_right, Piece):
@@ -216,13 +208,17 @@ def move_is_eliminated(piece, dir, target_color):
                 else:
                     return True
 
+        if isinstance(piece.bottom.bottom, Piece):
+            if piece.bottom.bottom.color == BLACK or piece.bottom.bottom.color == CORNER:
+                if piece.color == BLACK or piece.color == CORNER:
+                    return True
+
 
     return False
 
 # This function returns if a specific direction could be jumped over
 # and not get eliminated
 def check_valid_jump_move(piece, dir, target_color):
-
     if dir == LEFT:
         if piece.left and isinstance(piece.left.square_at(LEFT), Square):
             if not move_is_eliminated(piece.left, LEFT, target_color):

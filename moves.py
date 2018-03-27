@@ -160,20 +160,12 @@ def move_is_eliminated(piece, dir, target_color):
 
                 return True
 
-        elif isinstance(piece.right.right, Piece):
-            if piece.right.right == target_color or piece.right.right == CORNER:
-                if piece.color == target_color:
-                    return True
-
     if dir == LEFT:
         if isinstance(piece.top_left, Piece) and isinstance(piece.bottom_left, Piece):
             if piece.top_left.color == target_color and piece.bottom_left.color == target_color:
                 return True
 
-        elif isinstance(piece.left.left, Piece):
-            if piece.left.left == target_color or piece.left.left == CORNER:
-                if piece.color == target_color:
-                    return True
+
 
     if dir == TOP:
         if isinstance(piece.top_left, Piece) and isinstance(piece.top_right, Piece):
@@ -181,21 +173,10 @@ def move_is_eliminated(piece, dir, target_color):
 
                 return True
 
-        elif isinstance(piece.top.top, Piece):
-            if piece.top.top == target_color or piece.top.top == CORNER:
-                if piece.color == target_color:
-
-                    return True
-
     if dir == BOTTOM:
         if isinstance(piece.bottom_left, Piece) and isinstance(piece.bottom_right, Piece):
             if piece.bottom_left.color == target_color and piece.bottom_right.color == target_color:
                 return True
-
-            elif isinstance(piece.bottom.bottom, Piece):
-                if piece.bottom.bottom == target_color or piece.bottom.bottom == CORNER:
-                    if piece.color == target_color:
-                        return True
 
 
     return False

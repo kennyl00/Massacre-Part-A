@@ -134,12 +134,12 @@ def move_is_eliminated(piece, dir, target_color):
             if piece.top_right.color == target_color or piece.top_right.color == CORNER and \
                 piece.bottom_right.color == target_color or piece.bottom_right.color == CORNER:
 
-                if isinstance(piece.top_right.top, Piece) or isinstance(piece.bottom_right.bottom, Piece):
+                if isinstance(piece.top_right.top, Piece):
                     if piece.top_right.top.color == WHITE or piece.top_right.top.color == CORNER:
                         return False
 
-
-                    elif piece.bottom_right.bottom.color == WHITE or piece.bottom_right.bottom.color == CORNER:
+                elif isinstance(piece.bottom_right.bottom, Piece):
+                    if piece.bottom_right.bottom.color == WHITE or piece.bottom_right.bottom.color == CORNER:
                         return False
 
 
@@ -156,11 +156,12 @@ def move_is_eliminated(piece, dir, target_color):
             if piece.top_left.color == target_color or piece.top_left.color == CORNER and \
                 piece.bottom_left.color == target_color or piece.bottom_left.color == CORNER:
 
-                if isinstance(piece.top_left.top, Piece) or isinstance(piece.bottom_left.bottom, Piece):
+                if isinstance(piece.top_left.top, Piece):
                     if piece.top_left.top.color == WHITE or piece.top_left.color == CORNER:
                         return False
 
-                    elif piece.bottom_left.bottom.color == WHITE or piece.bottom_left.bottom.color == CORNER:
+                elif isinstance(piece.bottom_left.bottom, Piece):
+                    if piece.bottom_left.bottom.color == WHITE or piece.bottom_left.bottom.color == CORNER:
                         return False
 
                 else:
@@ -177,12 +178,13 @@ def move_is_eliminated(piece, dir, target_color):
             if piece.top_left.color == target_color or piece.top_left.color == CORNER \
                 and piece.top_right.color == target_color or piece.top_right.color == CORNER:
 
-                if isinstance(piece.top_left.left, Piece) or isinstance(piece.top_right.right, Piece):
+                if isinstance(piece.top_left.left, Piece):
                     if piece.top_left.left.color == WHITE or piece.top_left.left.color == CORNER:
 
                         return False
 
-                    elif piece.top_right.right.color == WHITE or piece.top_right.right.color == CORNER:
+                if isinstance(piece.top_right.right, Piece):
+                    if piece.top_right.right.color == WHITE or piece.top_right.right.color == CORNER:
                         return False
                 else:
                     return True
@@ -199,11 +201,12 @@ def move_is_eliminated(piece, dir, target_color):
             if piece.bottom_left.color == target_color or piece.bottom_left.color == CORNER \
                 and piece.bottom_right.color == target_color or piece.bottom_right.color == CORNER:
 
-                if isinstance(piece.bottom_left.left, Piece) or isinstance(piece.bottom_right.right, Piece):
+                if isinstance(piece.bottom_left.left, Piece):
                     if piece.bottom_left.left.color == WHITE or piece.bottom_left.left.color == CORNER:
                         return False
 
-                    elif piece.bottom_right.right.color == WHITE or piece.bottom_right.right.color == CORNER:
+                if isinstance(piece.bottom_right.right, Piece):
+                    if piece.bottom_right.right.color == WHITE or piece.bottom_right.right.color == CORNER:
                         return False
                 else:
                     return True

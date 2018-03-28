@@ -1,3 +1,7 @@
+# This File contains the function that checks for Elimination and actualy
+# eliminating Pieces
+# Created by JiaWei and Kenny (28/3/18)
+
 from board import *
 from neighbour import *
 

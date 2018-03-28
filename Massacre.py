@@ -1,3 +1,5 @@
+# This File contains functions that deploys each Piece to a Location
+
 from board import *
 from random import shuffle
 from neighbour import *
@@ -17,8 +19,8 @@ def Massacre(new_board, target_color):
         goal_list = get_goal_list(new_board, BLACK)
         goal = goal_list.pop(0)
 
-        # find the current goals from list can be occupied by white pieces and
-        # it will not make white pieces removed
+        # find the current goals from list can be occupied by white pieces
+        # and it will not make white pieces removed
         while not is_goal_achievable(new_board, goal):
             goal_list.append(goal)
             goal = goal_list.pop(0)
@@ -35,7 +37,6 @@ def Massacre(new_board, target_color):
 
                 if isEliminated(new_board, target_color):
                     break
-
 
                 # move another white piece to goal square1
                 piece_to_square(new_board,goal_square2, target_color)
@@ -67,7 +68,8 @@ def piece_to_square(new_board, goal_square, target_color):
         # find the start square according to start piece
         start_square = get_standing_square(start_piece, new_board)
         # find path with Astar search
-        path = astar(start_piece, start_square, goal_square, new_board, target_color)
+        path = astar(start_piece, start_square, goal_square, new_board, \
+        target_color)
         # print out path
         print_path(path)
         # set the moved white piece to be unmovable
@@ -80,7 +82,6 @@ def piece_to_square(new_board, goal_square, target_color):
 def print_path(path):
     square1 = None
     square2 = None
-    print('------')
     if path:
         path.reverse()
         for square in path:

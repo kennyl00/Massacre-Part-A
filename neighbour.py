@@ -4,8 +4,6 @@
 
 from board import *
 
-
-
 # This function takes in a Board filled with Pieces and identifies
 # each Piece's neighbours
 def find_neighbour(new_board):
@@ -57,7 +55,8 @@ def occupied_by_dir(piece, dir, list):
     for obj in list:
 
         # Return the object if it is at the Direction of the Piece
-        if (piece.x + delta_x(dir)) == obj.x and (piece.y + delta_y(dir)) == obj.y:
+        if (piece.x + delta_x(dir)) == obj.x and (piece.y + delta_y(dir)) \
+        == obj.y:
             return obj
 
     return None

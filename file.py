@@ -34,6 +34,5 @@ def read_file_from_stdin(new_board):
                 elif content[x][y] == '@':
                     new_board.add_to_pieces(Piece(x, y, BLACK, False))
 
-        print(content[x])
 
     return OUTPUT_STATE

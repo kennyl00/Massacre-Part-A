@@ -1,3 +1,6 @@
+# This File contains the A* algorithm
+# Created by JiaWei and Kenny (28/3/18)
+
 from board import *
 from moves import *
 from neighbour import *
@@ -38,7 +41,8 @@ def astar(start_piece, start_square, goal_square, new_board, target_color):
 
 
 # return all neighbours that meet requirements
-def get_available_neighbours(start_piece, current_square, new_board, openset, closedset):
+def get_available_neighbours(start_piece, current_square, new_board, openset, \
+closedset):
     # a list of neghbours to be added to openset
     neighbours_to_add = []
 

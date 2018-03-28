@@ -5,8 +5,6 @@ from moves import *
 from Astar import *
 
 def Massacre(new_board, target_color):
-
-
     while not isEliminated(new_board, BLACK):
 
         find_neighbour(new_board)
@@ -46,23 +44,17 @@ def Massacre(new_board, target_color):
 def piece_to_square(new_board, goal_square):
     goal_square.set_priority(new_board)
     start_piece = get_nearest_piece(new_board, WHITE)
-    start_square = get_standing_square(start_piece, new_board)
-    path = astar(start_piece, start_square, goal_square, new_board)
-
-    if path:
+    if start_piece:
+        start_square = get_standing_square(start_piece, new_board)
+        path = astar(start_piece, start_square, goal_square, new_board)
         print_path(path)
         start_piece.moveable = False
         refresh(new_board)
-        return True
 
-    else:
-        return False
 
 
 
 def print_path(path):
-
-    print('-----')
     square1 = None
     square2 = None
 
@@ -74,7 +66,8 @@ def print_path(path):
                 square2 = square
 
             if square1 and square2:
-                print('({},{}) -> ({},{})'.format(square1.y, square1.x, square2.y, square2.x))
+                print('({},{}) -> ({},{})'.format(square1.y, square1.x, \
+                square2.y, square2.x))
                 square1 = None
                 square2 = None
 
@@ -92,7 +85,6 @@ def eliminate(new_board, goal):
     target_piece = goal.piece_to_eliminate
 
     for dir in range(LEFT, TOP+1):
-
         if target_piece.square_at(dir) and target_piece.opposite_of(dir):
             if isinstance(target_piece.square_at(dir), Piece) and \
                 not target_piece.square_at(dir).color == CORNER:

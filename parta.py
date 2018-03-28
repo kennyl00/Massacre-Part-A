@@ -1,14 +1,14 @@
+# This is the main file
+# Created by JiaWei and Kenny (20/3/18)
+
 from neighbour import *
 from board import *
 from file import *
 from moves import *
 from Astar import *
 from Massacre import *
-
 import sys
 
-# This is the main file
-# Created by JiaWei and Kenny (20/3/18)
 
 def main():
 
@@ -20,18 +20,14 @@ def main():
 
     find_neighbour(board)
 
-    Massacre(board, BLACK)
-'''
-    piece1 = None
-    for piece in board.pieces:
-        if piece.x == 7 and piece.y == 3:
-            piece1 = piece
+    if OUTPUT_STATE == MASSACRE:
+        Massacre(board, BLACK)
 
+    elif OUTPUT_STATE == MOVES:
+        print(count_legal_moves(board, WHITE))
+        print(count_legal_moves(board, BLACK))
 
-    print(get_square(piece1, TOP, BLACK).y, get_square(piece1, TOP, BLACK).x)
-
-'''
-
-
+    else:
+        print("No Instructions Given")
 
 main()

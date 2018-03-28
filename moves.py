@@ -3,64 +3,31 @@
 
 from board import *
 
-def count_legal_move(new_board, color):
+# This Function returns all the available moves (including Jumps) of a
+# particular colored Piece
+def count_legal_moves(new_board, color):
     count = 0
-
-    # For every Piece in the Board's Piece List
     for piece in new_board.pieces:
-
-        # Check if the Piece has the desired Color
         if piece.color is color:
+            for dir in range(LEFT, BOTTOM+1):
+                piece_at_dir = piece.square_at(dir)
+                if piece_at_dir:
+                    if isinstance(piece_at_dir, Square):
+                        count+=1
 
-            # Check the Piece's Direction (TOP, BOTTOM, LEFT, RIGHT)
-            # has an Object
-            # Since there are CORNERS and Pieces on the sides do not necessarily
-            # have neighbours
-
-            # If the Piece's LEFT has an Object
-            if piece.left:
-
-                # Check if the Object is a Square
-                if isinstance(piece.left, Square):
-                    count += 1
-
-                else:
-                    # If not, check if the Piece's Left Left is a Square
-                    # Since they can jump
-                    if piece.left.left and isinstance(piece.left.left, Square):
-                        count += 1
-
-
-            if piece.right:
-                if isinstance(piece.right, Square):
-                    count += 1
-                else:
-                    if piece.right.right and isinstance(piece.right.right, Square):
-                        count += 1
-
-
-            if piece.top:
-                if isinstance(piece.top, Square):
-                    count += 1
-                else:
-                    if piece.top.top and isinstance(piece.top.top, Square):
-                        count += 1
-
-
-            if piece.bottom:
-                if isinstance(piece.bottom, Square):
-                    count += 1
-                else:
-                    if piece.bottom.bottom and isinstance(piece.bottom.bottom, Square):
-                        count += 1
+                    else:
+                        piece_at_dir_dir = piece_at_dir.square_at(dir)
+                        if piece_at_dir_dir and \
+                        isinstance(piece_at_dir_dir, Square):
+                            count+=1
 
     return count
 
-# This function returns a list of Goals
+
+# This Function returns a List of Goals that needs to filled by Pieces
 def get_goal_list(board, target_color):
 
     goal_squares = []
-
     for piece in board.pieces:
         if piece.color == target_color:
             for dir in range(LEFT, TOP+1):
@@ -84,12 +51,10 @@ def get_goal_list(board, target_color):
                     goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
                     break
 
-
-
     return goal_squares
 
-# This function will return a Square in any Direction unless it is Blocked by
-# a Piece and can't be Jumped Over
+# This function will return a Square in any given Direction unless
+# it is Blocked by a Piece or can't be Jumped Over
 def get_square(piece, dir, target_color):
     if check_move(piece, dir, target_color) == YES:
         return piece.square_at(dir)
@@ -100,35 +65,31 @@ def get_square(piece, dir, target_color):
     elif check_move(piece, dir, target_color) == NO:
         return  None
 
-
+# This Function will return a Square that a Piece is standing on
 def get_standing_square(piece, board):
-
     for square in board.squares:
         if piece.x == square.x and piece.y == square.y:
             return square
 
     return None
 
-
+# This function checks if a move is possible for a Piece at any given Direction
 def check_move(piece, dir, target_color):
-    # First check if the move is possible
     if check_valid_move(piece, dir):
-        # Check if move could be eliminated
         if not move_is_eliminated(piece, dir, target_color):
             return YES
 
     else:
-        # Check if a jump move is possible
         if check_valid_jump_move(piece, dir, target_color):
             return JUMP
 
     return NO
 
 
-# This function checks if the a move results in the elimination of the Piece
+# This Function check if a given direction leads to the
+# elimination of the given Piece
 def move_is_eliminated(piece, dir, target_color):
     if dir == RIGHT:
-
 
         if isinstance(piece.top_right, Piece) and isinstance(piece.bottom_right, Piece):
             if piece.top_right.color == target_color or piece.top_right.color == CORNER and \
@@ -216,10 +177,9 @@ def move_is_eliminated(piece, dir, target_color):
                 if piece.color == BLACK or piece.color == CORNER:
                     return True
 
-
     return False
 
-# This function returns if a specific direction could be jumped over
+# This Function returns if a given direction could be jumped over
 # and not get eliminated
 def check_valid_jump_move(piece, dir, target_color):
     if dir == LEFT:
@@ -245,7 +205,7 @@ def check_valid_jump_move(piece, dir, target_color):
     return False
 
 
-# This function returns if a specific direction is a valid move
+# This Function checks if a specific direction is a valid move
 # Valid moves are determined by Squares
 def check_valid_move(piece, dir):
 

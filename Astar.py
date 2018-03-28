@@ -3,6 +3,7 @@
 from board import *
 from moves import *
 from neighbour import *
+from elimination import *
 
 def astar(start_piece, start_square, goal_square, new_board):
     openset = []

@@ -164,7 +164,7 @@ def move_is_eliminated(piece, dir, target_color):
                     if piece_dir_right.right.color == WHITE or \
                     piece_dir_right.right.color == CORNER:
                         return False
-                        
+
                 else:
                     return True
 
@@ -180,11 +180,9 @@ def move_is_eliminated(piece, dir, target_color):
 # and not get eliminated
 def check_valid_jump_move(piece, dir, target_color):
 
-    piece_at_dir = piece.square_at(dir)
-    piece_at_dir_dir = piece_at_dir.square_at(dir)
-
-    if piece_at_dir and isinstance(piece_at_dir_dir, Square):
-        if not move_is_eliminated(piece_at_dir, dir, target_color):
+    if piece.square_at(dir) and \
+    isinstance(piece.square_at(dir).square_at(dir), Square):
+        if not move_is_eliminated(piece.square_at(dir), dir, target_color):
             return True
 
     return False

@@ -1,5 +1,6 @@
 # This File Handles the I/Os
 # Created by JiaWei and Kenny (20/3/18)
+
 from board import *
 import sys
 
@@ -25,13 +26,13 @@ def read_file_from_stdin(new_board):
         else:
             for y in range(len(content[x])):
                 if content[x][y] == 'X':
-                    new_board.add_to_pieces(Piece(x, y, CORNER))
+                    new_board.add_to_pieces(Piece(x, y, CORNER, False))
 
                 elif content[x][y] == 'O':
-                    new_board.add_to_pieces(Piece(x, y, WHITE))
+                    new_board.add_to_pieces(Piece(x, y, WHITE, True))
 
                 elif content[x][y] == '@':
-                    new_board.add_to_pieces(Piece(x, y, BLACK))
+                    new_board.add_to_pieces(Piece(x, y, BLACK, False))
 
         print(content[x])
 

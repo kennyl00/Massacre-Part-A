@@ -1,4 +1,4 @@
-# This is the main file
+# This is the Main File
 # Created by JiaWei and Kenny (20/3/18)
 
 from neighbour import *
@@ -8,7 +8,6 @@ from moves import *
 from Astar import *
 from Massacre import *
 import sys
-
 
 def main():
 

@@ -7,6 +7,9 @@ from board import *
 # particular colored Piece
 def count_legal_moves(new_board, color):
     count = 0
+
+    # For every given Colored Piece, check all 4 directions and see
+    # if they could jump or move
     for piece in new_board.pieces:
         if piece.color is color:
             for dir in range(LEFT, BOTTOM+1):
@@ -28,32 +31,45 @@ def count_legal_moves(new_board, color):
 def get_goal_list(board, target_color):
 
     goal_squares = []
+
+    # For every piece on the Board, check the Piece's X and Y direction and
+    # create a Goal Object if the Piece could be eliminated
     for piece in board.pieces:
         if piece.color == target_color:
             for dir in range(LEFT, TOP+1):
 
-                if isinstance(piece.square_at(dir), Piece) and isinstance(piece.opposite_of(dir), Square):
+                # The Piece's side is filled with a Piece and a Square
+                if isinstance(piece.square_at(dir), Piece) and \
+                isinstance(piece.opposite_of(dir), Square):
                     if piece.square_at(dir).color == WHITE:
-                        goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
+                        goal_squares.append(Goal(piece.square_at(dir), \
+                        piece.opposite_of(dir), piece))
 
                     elif piece.square_at(dir).color == CORNER:
-                        goal_squares.append(Goal(piece.opposite_of(dir), None, piece))
+                        goal_squares.append(Goal(piece.opposite_of(dir), \
+                        None, piece))
 
-                elif isinstance(piece.square_at(dir), Square) and isinstance(piece.opposite_of(dir), Piece):
+                # The Piece's side is filled with a Square and a Piece
+                elif isinstance(piece.square_at(dir), Square) and \
+                isinstance(piece.opposite_of(dir), Piece):
                     if piece.opposite_of(dir).color == WHITE:
-                        goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
+                        goal_squares.append(Goal(piece.square_at(dir), \
+                        piece.opposite_of(dir), piece))
 
                     elif piece.opposite_of(dir).color == CORNER:
-                        goal_squares.append(Goal(piece.square_at(dir), None, piece))
+                        goal_squares.append(Goal(piece.square_at(dir), None, \
+                        piece))
 
-
-                elif isinstance(piece.square_at(dir), Square) and isinstance(piece.opposite_of(dir), Square):
-                    goal_squares.append(Goal(piece.square_at(dir), piece.opposite_of(dir), piece))
-                    break
+                # The Piece's side is filled with a Square and a Square
+                elif isinstance(piece.square_at(dir), Square) and \
+                isinstance(piece.opposite_of(dir), Square):
+                    goal_squares.append(Goal(piece.square_at(dir), \
+                    piece.opposite_of(dir), piece))
 
     return goal_squares
 
-# This function will return a Square in any given Direction unless
+
+# This Function will return a Square in any given Direction unless
 # it is Blocked by a Piece or can't be Jumped Over
 def get_square(piece, dir, target_color):
     if check_move(piece, dir, target_color) == YES:
@@ -65,6 +81,7 @@ def get_square(piece, dir, target_color):
     elif check_move(piece, dir, target_color) == NO:
         return  None
 
+
 # This Function will return a Square that a Piece is standing on
 def get_standing_square(piece, board):
     for square in board.squares:
@@ -73,13 +90,17 @@ def get_standing_square(piece, board):
 
     return None
 
-# This function checks if a move is possible for a Piece at any given Direction
+
+# This Function checks if a move is possible for a Piece at any given Direction
 def check_move(piece, dir, target_color):
+    # If a move is valid
     if check_valid_move(piece, dir):
+        # If the move will not eliminate the piece
         if not move_is_eliminated(piece, dir, target_color):
             return YES
 
     else:
+        # If you could jump over
         if check_valid_jump_move(piece, dir, target_color):
             return JUMP
 
@@ -89,118 +110,82 @@ def check_move(piece, dir, target_color):
 # This Function check if a given direction leads to the
 # elimination of the given Piece
 def move_is_eliminated(piece, dir, target_color):
-    if dir == RIGHT:
 
-        if isinstance(piece.top_right, Piece) and isinstance(piece.bottom_right, Piece):
-            if piece.top_right.color == target_color or piece.top_right.color == CORNER and \
-                piece.bottom_right.color == target_color or piece.bottom_right.color == CORNER:
+    if dir == RIGHT or dir == LEFT:
+        piece_top_dir = piece.top.square_at(dir)
+        piece_bottom_dir = piece.bottom.square_at(dir)
+        piece_dir_dir = piece.square_at(dir).square_at(dir)
 
-                if isinstance(piece.top_right.top, Piece):
-                    if piece.top_right.top.color == WHITE or piece.top_right.top.color == CORNER:
+        if isinstance(piece_top_dir, Piece) and \
+        isinstance(piece_bottom_dir, Piece):
+            if piece_top_dir.color == target_color or \
+            piece_top_dir.color == CORNER and \
+            piece_bottom_dir.color == target_color or \
+            piece_bottom_dir.color == CORNER:
+
+                if isinstance(piece_top_dir.top, Piece):
+                    if piece_top_dir.top.color == WHITE or \
+                    piece_top_dir.top.color == CORNER:
                         return False
 
-                elif isinstance(piece.bottom_right.bottom, Piece):
-                    if piece.bottom_right.bottom.color == WHITE or piece.bottom_right.bottom.color == CORNER:
-                        return False
-
-
-                else:
-                    return True
-
-        if isinstance(piece.right.right, Piece):
-            if piece.right.right.color == BLACK or piece.right.right.color == CORNER:
-                if piece.color == BLACK or piece.color == CORNER:
-                    return True
-
-    if dir == LEFT:
-        if isinstance(piece.top_left, Piece) and isinstance(piece.bottom_left, Piece):
-            if piece.top_left.color == target_color or piece.top_left.color == CORNER and \
-                piece.bottom_left.color == target_color or piece.bottom_left.color == CORNER:
-
-                if isinstance(piece.top_left.top, Piece):
-                    if piece.top_left.top.color == WHITE or piece.top_left.color == CORNER:
-                        return False
-
-                elif isinstance(piece.bottom_left.bottom, Piece):
-                    if piece.bottom_left.bottom.color == WHITE or piece.bottom_left.bottom.color == CORNER:
+                elif isinstance(piece_bottom_dir.bottom, Piece):
+                    if piece_bottom_dir.bottom.color == WHITE or \
+                    piece_bottom_dir.bottom.color == CORNER:
                         return False
 
                 else:
                     return True
 
-        if isinstance(piece.left.left, Piece):
-            if piece.left.left.color == BLACK or piece.left.left.color == CORNER:
+        if isinstance(piece_dir_dir, Piece):
+            if piece_dir_dir.color == BLACK or piece_dir_dir.color == CORNER:
                 if piece.color == BLACK or piece.color == CORNER:
                     return True
 
 
-    if dir == TOP:
-        if isinstance(piece.top_left, Piece) and isinstance(piece.top_right, Piece):
-            if piece.top_left.color == target_color or piece.top_left.color == CORNER \
-                and piece.top_right.color == target_color or piece.top_right.color == CORNER:
+    if dir == TOP or dir == BOTTOM:
 
-                if isinstance(piece.top_left.left, Piece):
-                    if piece.top_left.left.color == WHITE or piece.top_left.left.color == CORNER:
+        piece_dir_left = piece.square_at(dir).left
+        piece_dir_right = piece.square_at(dir).right
+        piece_dir_dir = piece.square_at(dir).square_at(dir)
 
+        if isinstance(piece_dir_left, Piece) and \
+        isinstance(piece_dir_right, Piece):
+            if piece_dir_left.color == target_color or \
+            piece_dir_left.color == CORNER and \
+            piece_dir_right.color == target_color or \
+            piece_dir_right.color == CORNER:
+
+                if isinstance(piece_dir_left.left, Piece):
+                    if piece_dir_left.left.color == WHITE or \
+                    piece_dir_left.left.color == CORNER:
                         return False
 
-                if isinstance(piece.top_right.right, Piece):
-                    if piece.top_right.right.color == WHITE or piece.top_right.right.color == CORNER:
+                if isinstance(piece_dir_right.right, Piece):
+                    if piece_dir_right.right.color == WHITE or \
+                    piece_dir_right.right.color == CORNER:
                         return False
+                        
                 else:
                     return True
 
-        if isinstance(piece.top.top, Piece):
-            if piece.top.top.color == BLACK or piece.top.top.color == CORNER:
-                if piece.color == BLACK or piece.color == CORNER:
-                    return True
-
-
-
-    if dir == BOTTOM:
-        if isinstance(piece.bottom_left, Piece) and isinstance(piece.bottom_right, Piece):
-            if piece.bottom_left.color == target_color or piece.bottom_left.color == CORNER \
-                and piece.bottom_right.color == target_color or piece.bottom_right.color == CORNER:
-
-                if isinstance(piece.bottom_left.left, Piece):
-                    if piece.bottom_left.left.color == WHITE or piece.bottom_left.left.color == CORNER:
-                        return False
-
-                if isinstance(piece.bottom_right.right, Piece):
-                    if piece.bottom_right.right.color == WHITE or piece.bottom_right.right.color == CORNER:
-                        return False
-                else:
-                    return True
-
-        if isinstance(piece.bottom.bottom, Piece):
-            if piece.bottom.bottom.color == BLACK or piece.bottom.bottom.color == CORNER:
+        if isinstance(piece_dir_dir, Piece):
+            if piece_dir_left.color == BLACK or piece_dir_left.color == CORNER:
                 if piece.color == BLACK or piece.color == CORNER:
                     return True
 
     return False
 
+
 # This Function returns if a given direction could be jumped over
 # and not get eliminated
 def check_valid_jump_move(piece, dir, target_color):
-    if dir == LEFT:
-        if piece.left and isinstance(piece.left.square_at(LEFT), Square):
-            if not move_is_eliminated(piece.left, LEFT, target_color):
-                return True
 
-    if dir == RIGHT:
-        if piece.right and isinstance(piece.right.square_at(RIGHT), Square):
-            if not move_is_eliminated(piece.right, RIGHT, target_color):
-                return True
+    piece_at_dir = piece.square_at(dir)
+    piece_at_dir_dir = piece_at_dir.square_at(dir)
 
-    if dir == TOP:
-        if piece.top and isinstance(piece.top.square_at(TOP), Square):
-            if not move_is_eliminated(piece.top, TOP, target_color):
-                return True
-
-    if dir == BOTTOM:
-        if piece.bottom and isinstance(piece.bottom.square_at(BOTTOM), Square):
-            if not move_is_eliminated(piece.bottom, BOTTOM, target_color):
-                return True
+    if piece_at_dir and isinstance(piece_at_dir_dir, Square):
+        if not move_is_eliminated(piece_at_dir, dir, target_color):
+            return True
 
     return False
 
@@ -209,17 +194,9 @@ def check_valid_jump_move(piece, dir, target_color):
 # Valid moves are determined by Squares
 def check_valid_move(piece, dir):
 
-    if dir == LEFT and isinstance(piece.left, Square):
-        return True
+    piece_at_dir = piece.square_at(dir)
 
-    if dir == RIGHT and isinstance(piece.right, Square):
+    if isinstance(piece_at_dir, Square):
         return True
-
-    if dir == TOP and isinstance(piece.top, Square):
-        return True
-
-    if dir == BOTTOM and isinstance(piece.bottom, Square):
-        return True
-
 
     return False

@@ -59,7 +59,6 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
             if bigger_than_in_set(neighbour, closedset):
                 continue
             else:
-                print('H')
                 # set parent and add to openset
                 neighbour.parent = current_square
                 neighbours_to_add.append(neighbour)

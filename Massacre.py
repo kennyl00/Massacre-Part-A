@@ -20,7 +20,7 @@ def Massacre(new_board, target_color):
             goal = goal_list.pop(0)
             continue
 
-        if isinstance(goal.square1, Square) and isinstance(goal.square2, Square):
+        if goal.square1 and goal.square2:
             goal_square1 = goal.square1
             goal_square2 = goal.square2
 

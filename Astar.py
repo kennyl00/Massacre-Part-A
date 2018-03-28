@@ -1,11 +1,9 @@
-# This File constructs the A* algorithm
-
 from board import *
 from moves import *
 from neighbour import *
 from elimination import *
 
-def astar(start_piece, start_square, goal_square, new_board):
+def astar(start_piece, start_square, goal_square, new_board, target_color):
     openset = []
     closedset = []
     path = [] # to print the path to current state
@@ -17,6 +15,7 @@ def astar(start_piece, start_square, goal_square, new_board):
         current_square = find_min_f(openset)
         # move the piece to that square
         move(start_piece, current_square, new_board)
+        get_eliminated(new_board, target_color)
         # if a solution is found
         if start_piece.x == goal_square.x and start_piece.y == goal_square.y:
             # track back all parents and put these squares in path
@@ -60,6 +59,7 @@ def get_available_neighbours(start_piece, current_square, new_board, openset, cl
             if bigger_than_in_set(neighbour, closedset):
                 continue
             else:
+                print('H')
                 # set parent and add to openset
                 neighbour.parent = current_square
                 neighbours_to_add.append(neighbour)

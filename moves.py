@@ -112,64 +112,59 @@ def check_move(piece, dir, target_color):
 def move_is_eliminated(piece, dir, target_color):
 
     if dir == RIGHT or dir == LEFT:
-        piece_top_dir = piece.top.square_at(dir)
-        piece_bottom_dir = piece.bottom.square_at(dir)
-        piece_dir_dir = piece.square_at(dir).square_at(dir)
 
-        if isinstance(piece_top_dir, Piece) and \
-        isinstance(piece_bottom_dir, Piece):
-            if piece_top_dir.color == target_color or \
-            piece_top_dir.color == CORNER and \
-            piece_bottom_dir.color == target_color or \
-            piece_bottom_dir.color == CORNER:
+        if piece.top and piece.bottom and isinstance(piece.top.square_at(dir), Piece) and \
+        isinstance(piece.bottom.square_at(dir), Piece):
+            if piece.top.square_at(dir).color == target_color or \
+            piece.top.square_at(dir).color == CORNER and \
+            piece.bottom.square_at(dir).color == target_color or \
+            piece.bottom.square_at(dir).color == CORNER:
 
-                if isinstance(piece_top_dir.top, Piece):
-                    if piece_top_dir.top.color == WHITE or \
-                    piece_top_dir.top.color == CORNER:
+                if isinstance(piece.top.square_at(dir).top, Piece):
+                    if piece.top.square_at(dir).top.color == WHITE or \
+                    piece.top.square_at(dir).top.color == CORNER:
                         return False
 
-                elif isinstance(piece_bottom_dir.bottom, Piece):
-                    if piece_bottom_dir.bottom.color == WHITE or \
-                    piece_bottom_dir.bottom.color == CORNER:
+                elif isinstance(piece.bottom.square_at(dir).bottom, Piece):
+                    if piece.bottom.square_at(dir).bottom.color == WHITE or \
+                    piece.bottom.square_at(dir).bottom.color == CORNER:
                         return False
 
                 else:
                     return True
 
-        if isinstance(piece_dir_dir, Piece):
-            if piece_dir_dir.color == BLACK or piece_dir_dir.color == CORNER:
+        if isinstance(piece.square_at(dir).square_at(dir), Piece):
+            if piece.square_at(dir).square_at(dir).color == BLACK or \
+            piece.square_at(dir).square_at(dir).color == CORNER:
                 if piece.color == BLACK or piece.color == CORNER:
                     return True
 
 
     if dir == TOP or dir == BOTTOM:
 
-        piece_dir_left = piece.square_at(dir).left
-        piece_dir_right = piece.square_at(dir).right
-        piece_dir_dir = piece.square_at(dir).square_at(dir)
+        if isinstance(piece.square_at(dir).left, Piece) and \
+        isinstance(piece.square_at(dir).right, Piece):
+            if piece.square_at(dir).left.color == target_color or \
+            piece.square_at(dir).left.color == CORNER and \
+            piece.square_at(dir).right.color == target_color or \
+            piece.square_at(dir).right.color == CORNER:
 
-        if isinstance(piece_dir_left, Piece) and \
-        isinstance(piece_dir_right, Piece):
-            if piece_dir_left.color == target_color or \
-            piece_dir_left.color == CORNER and \
-            piece_dir_right.color == target_color or \
-            piece_dir_right.color == CORNER:
-
-                if isinstance(piece_dir_left.left, Piece):
-                    if piece_dir_left.left.color == WHITE or \
-                    piece_dir_left.left.color == CORNER:
+                if isinstance(piece.square_at(dir).left.left, Piece):
+                    if piece.square_at(dir).left.left.color == WHITE or \
+                    piece.square_at(dir).left.left.color == CORNER:
                         return False
 
-                if isinstance(piece_dir_right.right, Piece):
-                    if piece_dir_right.right.color == WHITE or \
-                    piece_dir_right.right.color == CORNER:
+                if isinstance(piece.square_at(dir).right.right, Piece):
+                    if piece.square_at(dir).right.right.color == WHITE or \
+                    piece.square_at(dir).right.right.color == CORNER:
                         return False
 
                 else:
                     return True
 
-        if isinstance(piece_dir_dir, Piece):
-            if piece_dir_left.color == BLACK or piece_dir_left.color == CORNER:
+        if isinstance(piece.square_at(dir).square_at(dir), Piece):
+            if piece.square_at(dir).square_at(dir).color == BLACK or \
+            piece.square_at(dir).square_at(dir).color == CORNER:
                 if piece.color == BLACK or piece.color == CORNER:
                     return True
 

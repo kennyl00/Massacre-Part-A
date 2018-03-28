@@ -1,7 +1,3 @@
-# This File contains the Functions that deploys each Pieces to their
-# destination (Goal Squares)
-# Created by JiaWei and Kenny (28/3/17)
-
 from board import *
 from random import shuffle
 from neighbour import *
@@ -13,7 +9,7 @@ from elimination import *
 # elimination of all black pieces
 def Massacre(new_board, target_color):
     # while there are black pieces on board
-    while not isEliminated(new_board, BLACK):
+    while not isEliminated(new_board, target_color):
         # reconstruct neighbourhood of all pieces and squares
         find_neighbour(new_board)
         goal_list = []
@@ -35,27 +31,34 @@ def Massacre(new_board, target_color):
             # if goal square1 needs to be occupied first
             if goal.first_to_fit == 1:
                 # move one white piece to goal square1
-                piece_to_square(new_board,goal_square1)
+                piece_to_square(new_board, goal_square1, target_color)
+
+                if isEliminated(new_board, target_color):
+                    break
+
+
                 # move another white piece to goal square1
-                piece_to_square(new_board,goal_square2)
+                piece_to_square(new_board,goal_square2, target_color)
                 # eliminate this goal
-                rest_pieces(new_board, goal)
+                reset_piece(new_board, goal)
             # if goal square1 needs to be occupied first
             # move to goal square2 first
             elif goal.first_to_fit == 2:
-                piece_to_square(new_board, goal_square2)
-                piece_to_square(new_board, goal_square1)
-                rest_pieces(new_board, goal)
+                piece_to_square(new_board, goal_square2, target_color)
+                if isEliminated(new_board, target_color):
+                    break
+                piece_to_square(new_board, goal_square1, target_color)
+                reset_piece(new_board, goal)
 
         # if there is only one goal square
         else:
             goal_square1 = goal.square1
-            piece_to_square(new_board,goal_square1)
-            rest_pieces(new_board, goal)
+            piece_to_square(new_board,goal_square1, target_color)
+            reset_piece(new_board, goal)
 
 
 # make the nearest moveable white piece of a goal square to that square
-def piece_to_square(new_board, goal_square):
+def piece_to_square(new_board, goal_square, target_color):
     # set heuristics(priority) of the whole board
     goal_square.set_priority(new_board)
     # pick the nearest white piece
@@ -64,7 +67,7 @@ def piece_to_square(new_board, goal_square):
         # find the start square according to start piece
         start_square = get_standing_square(start_piece, new_board)
         # find path with Astar search
-        path = astar(start_piece, start_square, goal_square, new_board)
+        path = astar(start_piece, start_square, goal_square, new_board, target_color)
         # print out path
         print_path(path)
         # set the moved white piece to be unmovable
@@ -77,7 +80,7 @@ def piece_to_square(new_board, goal_square):
 def print_path(path):
     square1 = None
     square2 = None
-
+    print('------')
     if path:
         path.reverse()
         for square in path:
@@ -100,7 +103,7 @@ def print_path(path):
 
 
 # remove the target black piece from board
-def rest_pieces(new_board, goal):
+def reset_piece(new_board, goal):
 
     target_piece = goal.piece_to_eliminate
 
@@ -117,7 +120,6 @@ def rest_pieces(new_board, goal):
 
                 target_piece.opposite_of(dir).moveable = True
 
-    new_board.pieces.remove(target_piece)
 
 
 def refresh(new_board):
@@ -130,6 +132,16 @@ def refresh(new_board):
     # reconstruct neighbourhood
     find_neighbour(new_board)
 
+
+# check if there is any piece of certain color on board
+def isEliminated(board, color):
+
+    for piece in board.pieces:
+
+        if piece.color == color:
+            return False
+
+    return True
 
 
 # find the nearest moveable piece of the target
